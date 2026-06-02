@@ -80,10 +80,12 @@
         <div style="margin: 20px 0;">
     <div style="max-width: 600px; margin: 20px auto; position: relative;">
     <div style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-        <img src="image1.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
-        <img src="image2.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
-        <img src="image3.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
-        <img src="image4.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0;">
+    <img src="image1.png" alt="أداة تحويل الصور" style="width:100%; max-width: 200px; border-radius: 10px;">
+    <img src="image2.png" alt="أداة تحويل النص" style="width:100%; max-width: 200px; border-radius: 10px;">
+    <img src="image3.png" alt="واجهة الموقع" style="width:100%; max-width: 200px; border-radius: 10px;">
+    <img src="image4.png" alt="نتيجة التحويل" style="width:100%; max-width: 200px; border-radius: 10px;">
+</div>
     </div>
     <div style="text-align: center; margin-top: 10px;">
         <button onclick="showImage(0)" style="background:#1a237e; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">1</button>
