@@ -78,10 +78,40 @@
     <div class="container">
         <h1>📄 أدوات تحويل PDF</h1>
         <div style="margin: 20px 0;">
-    <img src="image1.png" alt="أداة تحويل الصور" style="width:100%; border-radius:10px; margin-bottom: 10px;">
-    <img src="image2.png" alt="أداة تحويل النص" style="width:100%; border-radius:10px; margin-bottom: 10px;">
-    <img src="image3.png" alt="واجهة الموقع" style="width:100%; border-radius:10px; margin-bottom: 10px;">
-    <img src="image4.png" alt="نتيجة التحويل" style="width:100%; border-radius:10px; margin-bottom: 10px;">
+    <div style="max-width: 600px; margin: 20px auto; position: relative;">
+    <div style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <img src="image1.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
+        <img src="image2.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
+        <img src="image3.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
+        <img src="image4.png" style="width: 100%; transition: 0.5s; display: none;" class="slider-img">
+    </div>
+    <div style="text-align: center; margin-top: 10px;">
+        <button onclick="showImage(0)" style="background:#1a237e; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">1</button>
+        <button onclick="showImage(1)" style="background:#1a237e; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">2</button>
+        <button onclick="showImage(2)" style="background:#1a237e; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">3</button>
+        <button onclick="showImage(3)" style="background:#1a237e; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">4</button>
+    </div>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.slider-img');
+
+    function showImage(index) {
+        images.forEach(img => img.style.display = 'none');
+        images[index].style.display = 'block';
+        currentIndex = index;
+    }
+
+    // Auto slide every 3 seconds
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }, 3000);
+
+    // Show first image
+    showImage(0);
+</script>
 </div>
         <!-- القسم الأول: تحويل الصور -->
         <div class="section">
