@@ -106,38 +106,33 @@ input[type="range"] { width: 100%; }
     <p class="subtitle">حول واضغط ملفاتك 100% أونلاين ومن غير علامة مائية</p>
 
     <div class="tools-grid">
-
-        <!-- الأداة 1 -->
         <div class="tool">
             <h2>📄 PDF إلى Word</h2>
             <p>حول ملف PDF إلى مستند Word قابل للتعديل</p>
             <input type="file" id="pdfToWord" accept=".pdf">
             <button onclick="goShortlink('convertPDFtoWord')">حول الآن</button>
-            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
+            <p class="earning-note">إعلان 5 ثواني - شكراً لدعمك</p>
             <div id="status1" class="status"></div>
         </div>
 
-        <!-- الأداة 2 -->
         <div class="tool">
             <h2>🖼️ PDF إلى JPG</h2>
             <p>استخرج كل صفحات PDF كصور JPG عالية الجودة</p>
             <input type="file" id="pdfToJpg" accept=".pdf">
             <button onclick="goShortlink('convertPDFtoJPG')">حول الآن</button>
-            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
+            <p class="earning-note">إعلان 5 ثواني - شكراً لدعمك</p>
             <div id="status2" class="status"></div>
         </div>
 
-        <!-- الأداة 3 -->
         <div class="tool">
             <h2>📸 صور إلى PDF</h2>
             <p>اجمع صورك في ملف PDF واحد مرتب</p>
             <input type="file" id="imagesToPdf" accept="image/*" multiple>
             <button onclick="goShortlink('convertImagesToPDF')">حول الآن</button>
-            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
+            <p class="earning-note">إعلان 5 ثواني - شكراً لدعمك</p>
             <div id="status3" class="status"></div>
         </div>
 
-        <!-- الأداة 4 -->
         <div class="tool">
             <h2>⚡ ضغط الصور</h2>
             <p>قلل حجم الصورة 80% بدون ما تبوظ الجودة</p>
@@ -147,10 +142,9 @@ input[type="range"] { width: 100%; }
                 <input type="range" id="qualitySlider" min="10" max="95" value="70">
             </div>
             <button onclick="goShortlink('compressImages')">اضغط الصور</button>
-            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
+            <p class="earning-note">إعلان 5 ثواني - شكراً لدعمك</p>
             <div id="status4" class="status"></div>
         </div>
-
     </div>
 
     <div class="donate-box">
@@ -167,16 +161,12 @@ input[type="range"] { width: 100%; }
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// حط التوكن بتاعك هنا من ShrinkMe
-const SHRINKME_TOKEN = 'YOUR_API_TOKEN_HERE';
+// التوكن بتاعك راكب جاهز
+const SHRINKME_TOKEN = 'e405d36f1ec48ccdf699fb779c70c9652a5cd58a';
 
-// دالة الروابط المختصرة
 function goShortlink(funcName) {
-    // افتح صفحة الإعلان في تاب جديد
     const shortUrl = 'https://shrinkme.io/' + SHRINKME_TOKEN + '?url=' + encodeURIComponent(window.location.href + '#' + funcName);
     window.open(shortUrl, '_blank');
-
-    // بعد 6 ثواني شغل الأداة في الصفحة الأصلية
     setTimeout(() => {
         window[funcName]();
     }, 6000);
@@ -194,7 +184,6 @@ function showStatus(id, message, type) {
     setTimeout(() => status.style.display = 'none', 5000);
 }
 
-// باقي دوال الأدوات زي ما هي بدون تغيير
 async function convertPDFtoWord() {
     const file = document.getElementById('pdfToWord').files[0];
     if (!file) return showStatus('status1', 'اختار ملف PDF الأول', 'error');
