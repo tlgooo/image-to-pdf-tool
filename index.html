@@ -2,189 +2,50 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>محول الملفات - حول أي صورة أو فيديو أونلاين مجاناً</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<title>تحويل صورة إلى PDF</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Tajawal',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
-.container{max-width:900px;margin:0 auto;background:white;border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-h1{text-align:center;color:#667eea;margin-bottom:10px;font-size:32px}
-.subtitle{text-align:center;color:#666;margin-bottom:40px}
-.tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:40px}
-.tool-card{background:linear-gradient(135deg,#667eea15 0%,#764ba215 100%);border:2px solid #667eea30;border-radius:15px;padding:25px;text-align:center;cursor:pointer;transition:0.3s}
-.tool-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(102,126,234,0.3);border-color:#667eea}
-.tool-icon{font-size:48px;margin-bottom:15px}
-.tool-card h3{color:#333;margin-bottom:10px}
-.tool-card p{color:#666;font-size:14px}
-.upload-area{border:3px dashed #667eea;border-radius:15px;padding:50px;text-align:center;background:#f8f9ff;margin:20px 0;cursor:pointer;transition:0.3s}
-.upload-area:hover{background:#eef2ff;border-color:#764ba2}
-#fileInput{display:none}
-.btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 40px;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin:10px;transition:0.3s}
-.btn:hover{transform:scale(1.05)}
-.btn:disabled{opacity:0.5;cursor:not-allowed}
-.progress-bar{width:100%;height:8px;background:#e0e0e0;border-radius:10px;overflow:hidden;margin:20px 0;display:none}
-.progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);width:0%;transition:0.3s}
-.result-area{display:none;text-align:center;margin-top:30px}
-.loading{display:none;text-align:center;margin:20px 0}
-.spinner{border:4px solid #f3f3f3;border-top:4px solid #667eea;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #e0e0e0;color:#999;font-size:14px}
+body{font-family:tahoma;text-align:center;padding:50px;background:#f5f5f5}
+.box{background:white;padding:40px;border-radius:15px;max-width:500px;margin:auto;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
+h1{color:#667eea}
+input,select,button{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:2px solid #ddd;font-size:16px}
+button{background:#667eea;color:white;border:none;cursor:pointer;font-weight:bold}
+button:hover{background:#764ba2}
+#result{display:none;margin-top:20px}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>🚀 محول الملفات السحري</h1>
-<p class="subtitle">حول صورك وفيديوهاتك لأي صيغة تختارها - مجاناً وسريع</p>
+<div class="box">
+<h1>📄 تحويل صورة إلى PDF</h1>
+<p>ارفع الصورة وهنحولها PDF بعد الإعلان</p>
 
-<div class="tool-grid">
-<div class="tool-card" onclick="selectTool('image')">
-<div class="tool-icon">🖼️</div>
-<h3>تحويل الصور</h3>
-<p>JPG ↔ PNG ↔ WEBP ↔ GIF</p>
-</div>
-<div class="tool-card" onclick="selectTool('video')">
-<div class="tool-icon">🎬</div>
-<h3>تحويل الفيديو</h3>
-<p>MP4 ↔ WEBM ↔ GIF</p>
-</div>
-</div>
+<input type="file" id="file" accept="image/*">
+<button onclick="goAd()">حول إلى PDF</button>
 
-<div id="uploadSection" style="display:none">
-<h3 id="toolTitle" style="text-align:center;margin-bottom:20px;color:#333"></h3>
-<div class="upload-area" id="dropZone">
-<p style="font-size:48px;margin-bottom:15px">📁</p>
-<p style="font-size:18px;color:#333;margin-bottom:10px">اسحب الملف هنا أو اضغط للاختيار</p>
-<input type="file" id="fileInput">
+<div id="result">
+<p style="color:green;font-size:20px">✅ تم التحويل!</p>
+<button onclick="alert('هنا هينزل ملف PDF')">تحميل PDF</button>
 </div>
-<select id="formatSelect" style="width:100%;padding:12px;border-radius:8px;border:2px solid #ddd;font-size:16px;margin:20px 0">
-<option value="">اختر الصيغة المطلوبة...</option>
-</select>
-<button class="btn" id="convertBtn" onclick="goToLinkvertise()" disabled>حول الآن</button>
-<div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="loading" id="loading"><div class="spinner"></div><p style="margin-top:15px;color:#667eea">جاري التحويل...</p></div>
-<div class="result-area" id="resultArea">
-<h3 style="color:#4caf50;margin-bottom:15px">✅ تم التحويل بنجاح!</h3>
-<button class="btn" id="downloadBtn">تحميل الملف</button>
-<button class="btn" onclick="resetTool()" style="background:#999">تحويل ملف آخر</button>
-</div>
-</div>
-
-<footer>صنع بـ ❤️ بواسطة عادل | 2026</footer>
 </div>
 
 <script>
-const LINKVERTISE_URL = 'https://link-hub.net/6200670/XnSNDzlHKFi1?r=';
-let currentTool = '';
-let selectedFile = null;
-let convertedBlob = null;
-let toolData = {};
+// حط لينك Linkvertise بتاعك هنا
+const LINK = 'https://link-hub.net/6200670/XnSNDzlHKFi1?r=';
 
-const formats = {
-image: ['JPG', 'PNG', 'WEBP', 'GIF'],
-video: ['MP4', 'WEBM', 'GIF']
-};
-
-function selectTool(tool) {
-currentTool = tool;
-toolData = {tool: tool, fileName: '', fileSize: 0};
-document.getElementById('uploadSection').style.display = 'block';
-document.getElementById('toolTitle').textContent = tool === 'image'? '🖼️ محول الصور' : '🎬 محول الفيديو';
-
-const select = document.getElementById('formatSelect');
-select.innerHTML = '<option value="">اختر الصيغة المطلوبة...</option>';
-formats[tool].forEach(f => {
-select.innerHTML += `<option value="${f}">${f}</option>`;
-});
-window.scrollTo({top: document.getElementById('uploadSection').offsetTop, behavior: 'smooth'});
+function goAd() {
+if(!document.getElementById('file').files[0]) {
+alert('اختار صورة الأول');
+return;
+}
+// نحفظ إن المستخدم اختار ملف
+localStorage.setItem('hasFile', 'yes');
+// نروح الإعلان ونرجع لنفس الصفحة
+window.location.href = LINK + encodeURIComponent(window.location.href + '#done');
 }
 
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const convertBtn = document.getElementById('convertBtn');
-
-dropZone.onclick = () => fileInput.click();
-fileInput.onchange = (e) => handleFile(e.target.files[0]);
-
-function handleFile(file) {
-if(!file) return;
-selectedFile = file;
-toolData.fileName = file.name;
-toolData.fileSize = file.size;
-dropZone.innerHTML = `<p style="font-size:48px">✅</p><p style="font-size:18px;color:#4caf50">${file.name}</p><p style="color:#999;font-size:14px">${(file.size/1024/1024).toFixed(2)} MB</p>`;
-checkReady();
-}
-
-document.getElementById('formatSelect').onchange = checkReady;
-
-function checkReady() {
-convertBtn.disabled =!selectedFile ||!document.getElementById('formatSelect').value;
-}
-
-function goToLinkvertise() {
-// نحفظ بيانات الملف في المتصفح عشان نرجع نكمل
-localStorage.setItem('toolData', JSON.stringify(toolData));
-localStorage.setItem('selectedFormat', document.getElementById('formatSelect').value);
-
-// نروح Linkvertise ونقوله ارجعني لنفس الصفحة
-const returnUrl = window.location.href.split('#')[0] + '#returned';
-window.location.href = LINKVERTISE_URL + encodeURIComponent(returnUrl);
-}
-
-// لما الصفحة تحمل نشوف رجعنا من Linkvertise ولا لأ
-window.onload = function() {
-const savedData = localStorage.getItem('toolData');
-const savedFormat = localStorage.getItem('selectedFormat');
-
-if(window.location.hash === '#returned' && savedData) {
-toolData = JSON.parse(savedData);
-selectedFile = new File([""], toolData.fileName); // ملف وهمي بس عشان نكمل
-document.getElementById('uploadSection').style.display = 'block';
-document.getElementById('loading').style.display = 'block';
-document.getElementById('progressBar').style.display = 'block';
-document.getElementById('convertBtn').style.display = 'none';
-
-// محاكاة التحويل
-let progress = 0;
-const interval = setInterval(() => {
-progress += 20;
-document.getElementById('progressFill').style.width = progress + '%';
-if(progress >= 100) {
-clearInterval(interval);
-finishConversion(savedFormat);
-}
-}, 300);
-}
-}
-
-function finishConversion(format) {
-document.getElementById('loading').style.display = 'none';
-convertedBlob = new Blob(["ملف محول تجريبي"], {type: 'text/plain'});
-document.getElementById('resultArea').style.display = 'block';
-document.getElementById('downloadBtn').onclick = () => {
-const url = URL.createObjectURL(convertedBlob);
-const a = document.createElement('a');
-a.href = url;
-a.download = 'converted_' + toolData.fileName.split('.')[0] + '.' + format.toLowerCase();
-a.click();
-localStorage.removeItem('toolData');
-localStorage.removeItem('selectedFormat');
-};
-}
-
-function resetTool() {
-selectedFile = null;
-convertedBlob = null;
-localStorage.removeItem('toolData');
-localStorage.removeItem('selectedFormat');
-window.location.hash = '';
-document.getElementById('uploadSection').style.display = 'none';
-document.getElementById('resultArea').style.display = 'none';
-document.getElementById('convertBtn').style.display = 'inline-block';
-document.getElementById('progressBar').style.display = 'none';
-dropZone.innerHTML = `<p style="font-size:48px;margin-bottom:15px">📁</p><p style="font-size:18px;color:#333;margin-bottom:10px">اسحب الملف هنا أو اضغط للاختيار</p><input type="file" id="fileInput">`;
-document.getElementById('fileInput').onchange = (e) => handleFile(e.target.files[0]);
-convertBtn.disabled = true;
+// لما نرجع من الإعلان
+if(window.location.hash === '#done' && localStorage.getItem('hasFile') === 'yes') {
+document.getElementById('result').style.display = 'block';
+localStorage.removeItem('hasFile');
 }
 </script>
 </body>
