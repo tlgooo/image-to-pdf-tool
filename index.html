@@ -19,10 +19,9 @@ h1{text-align:center;color:#667eea;margin-bottom:10px;font-size:32px}
 .tool-card p{color:#666;font-size:14px}
 .upload-area{border:3px dashed #667eea;border-radius:15px;padding:50px;text-align:center;background:#f8f9ff;margin:20px 0;cursor:pointer;transition:0.3s}
 .upload-area:hover{background:#eef2ff;border-color:#764ba2}
-.upload-area.dragover{background:#e0e7ff}
 #fileInput{display:none}
 .btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 40px;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin:10px;transition:0.3s}
-.btn:hover{transform:scale(1.05);box-shadow:0 5px 20px rgba(102,126,234,0.4)}
+.btn:hover{transform:scale(1.05)}
 .btn:disabled{opacity:0.5;cursor:not-allowed}
 .progress-bar{width:100%;height:8px;background:#e0e0e0;border-radius:10px;overflow:hidden;margin:20px 0;display:none}
 .progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);width:0%;transition:0.3s}
@@ -49,11 +48,6 @@ footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #
 <h3>تحويل الفيديو</h3>
 <p>MP4 ↔ WEBM ↔ GIF</p>
 </div>
-<div class="tool-card" onclick="selectTool('compress')">
-<div class="tool-icon">📦</div>
-<h3>ضغط الملفات</h3>
-<p>قلل الحجم بدون فقد الجودة</p>
-</div>
 </div>
 
 <div id="uploadSection" style="display:none">
@@ -61,13 +55,12 @@ footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #
 <div class="upload-area" id="dropZone">
 <p style="font-size:48px;margin-bottom:15px">📁</p>
 <p style="font-size:18px;color:#333;margin-bottom:10px">اسحب الملف هنا أو اضغط للاختيار</p>
-<p style="color:#999;font-size:14px">يدعم جميع الصيغ الشائعة</p>
 <input type="file" id="fileInput">
 </div>
 <select id="formatSelect" style="width:100%;padding:12px;border-radius:8px;border:2px solid #ddd;font-size:16px;margin:20px 0">
 <option value="">اختر الصيغة المطلوبة...</option>
 </select>
-<button class="btn" id="convertBtn" onclick="convertFile()" disabled>حول الآن</button>
+<button class="btn" id="convertBtn" onclick="goToLinkvertise()" disabled>حول الآن</button>
 <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
 <div class="loading" id="loading"><div class="spinner"></div><p style="margin-top:15px;color:#667eea">جاري التحويل...</p></div>
 <div class="result-area" id="resultArea">
@@ -77,32 +70,26 @@ footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #
 </div>
 </div>
 
-<footer>
-صنع بـ ❤️ بواسطة عادل | جميع الحقوق محفوظة 2026
-</footer>
+<footer>صنع بـ ❤️ بواسطة عادل | 2026</footer>
 </div>
 
 <script>
-// الإعدادات - حط لينك Linkvertise بتاعك هنا
 const LINKVERTISE_URL = 'https://link-hub.net/6200670/XnSNDzlHKFi1?r=';
-
 let currentTool = '';
 let selectedFile = null;
 let convertedBlob = null;
+let toolData = {};
 
 const formats = {
-image: ['JPG', 'PNG', 'WEBP', 'GIF', 'BMP'],
-video: ['MP4', 'WEBM', 'GIF'],
-compress: ['ZIP']
+image: ['JPG', 'PNG', 'WEBP', 'GIF'],
+video: ['MP4', 'WEBM', 'GIF']
 };
 
 function selectTool(tool) {
 currentTool = tool;
+toolData = {tool: tool, fileName: '', fileSize: 0};
 document.getElementById('uploadSection').style.display = 'block';
-document.getElementById('toolTitle').textContent =
-tool === 'image'? '🖼️ محول الصور' :
-tool === 'video'? '🎬 محول الفيديو' :
-'📦 ضغط الملفات';
+document.getElementById('toolTitle').textContent = tool === 'image'? '🖼️ محول الصور' : '🎬 محول الفيديو';
 
 const select = document.getElementById('formatSelect');
 select.innerHTML = '<option value="">اختر الصيغة المطلوبة...</option>';
@@ -119,70 +106,83 @@ const convertBtn = document.getElementById('convertBtn');
 dropZone.onclick = () => fileInput.click();
 fileInput.onchange = (e) => handleFile(e.target.files[0]);
 
-dropZone.ondragover = (e) => {e.preventDefault(); dropZone.classList.add('dragover')};
-dropZone.ondragleave = () => dropZone.classList.remove('dragover');
-dropZone.ondrop = (e) => {e.preventDefault(); dropZone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0])};
-
 function handleFile(file) {
 if(!file) return;
 selectedFile = file;
+toolData.fileName = file.name;
+toolData.fileSize = file.size;
 dropZone.innerHTML = `<p style="font-size:48px">✅</p><p style="font-size:18px;color:#4caf50">${file.name}</p><p style="color:#999;font-size:14px">${(file.size/1024/1024).toFixed(2)} MB</p>`;
-convertBtn.disabled = false;
+checkReady();
 }
 
-document.getElementById('formatSelect').onchange = (e) => {
-convertBtn.disabled =!selectedFile ||!e.target.value;
-};
+document.getElementById('formatSelect').onchange = checkReady;
 
-async function convertFile() {
-if(!selectedFile) return;
-
-// خطوة 1: روح Linkvertise الأول
-window.location.href = LINKVERTISE_URL + encodeURIComponent(window.location.href + '#back');
+function checkReady() {
+convertBtn.disabled =!selectedFile ||!document.getElementById('formatSelect').value;
 }
 
-// خطوة 2: لما ترجع من Linkvertise كمل التحويل
-window.onload = async function() {
-if(window.location.hash === '#back' && selectedFile) {
+function goToLinkvertise() {
+// نحفظ بيانات الملف في المتصفح عشان نرجع نكمل
+localStorage.setItem('toolData', JSON.stringify(toolData));
+localStorage.setItem('selectedFormat', document.getElementById('formatSelect').value);
+
+// نروح Linkvertise ونقوله ارجعني لنفس الصفحة
+const returnUrl = window.location.href.split('#')[0] + '#returned';
+window.location.href = LINKVERTISE_URL + encodeURIComponent(returnUrl);
+}
+
+// لما الصفحة تحمل نشوف رجعنا من Linkvertise ولا لأ
+window.onload = function() {
+const savedData = localStorage.getItem('toolData');
+const savedFormat = localStorage.getItem('selectedFormat');
+
+if(window.location.hash === '#returned' && savedData) {
+toolData = JSON.parse(savedData);
+selectedFile = new File([""], toolData.fileName); // ملف وهمي بس عشان نكمل
+document.getElementById('uploadSection').style.display = 'block';
 document.getElementById('loading').style.display = 'block';
 document.getElementById('progressBar').style.display = 'block';
 document.getElementById('convertBtn').style.display = 'none';
 
-// محاكاة التحويل - هنا هتحط الكود الحقي بتاع التحويل
+// محاكاة التحويل
 let progress = 0;
 const interval = setInterval(() => {
-progress += 10;
+progress += 20;
 document.getElementById('progressFill').style.width = progress + '%';
 if(progress >= 100) {
 clearInterval(interval);
-finishConversion();
+finishConversion(savedFormat);
 }
-}, 200);
+}, 300);
 }
 }
 
-async function finishConversion() {
+function finishConversion(format) {
 document.getElementById('loading').style.display = 'none';
-// إنشاء ملف وهمي للتجربة - استبدله بكود التحويل الحقي
-convertedBlob = new Blob([selectedFile], {type: selectedFile.type});
+convertedBlob = new Blob(["ملف محول تجريبي"], {type: 'text/plain'});
 document.getElementById('resultArea').style.display = 'block';
 document.getElementById('downloadBtn').onclick = () => {
 const url = URL.createObjectURL(convertedBlob);
 const a = document.createElement('a');
 a.href = url;
-a.download = 'converted_' + selectedFile.name;
+a.download = 'converted_' + toolData.fileName.split('.')[0] + '.' + format.toLowerCase();
 a.click();
+localStorage.removeItem('toolData');
+localStorage.removeItem('selectedFormat');
 };
 }
 
 function resetTool() {
 selectedFile = null;
 convertedBlob = null;
+localStorage.removeItem('toolData');
+localStorage.removeItem('selectedFormat');
+window.location.hash = '';
 document.getElementById('uploadSection').style.display = 'none';
 document.getElementById('resultArea').style.display = 'none';
 document.getElementById('convertBtn').style.display = 'inline-block';
 document.getElementById('progressBar').style.display = 'none';
-dropZone.innerHTML = `<p style="font-size:48px;margin-bottom:15px">📁</p><p style="font-size:18px;color:#333;margin-bottom:10px">اسحب الملف هنا أو اضغط للاختيار</p><p style="color:#999;font-size:14px">يدعم جميع الصيغ الشائعة</p><input type="file" id="fileInput">`;
+dropZone.innerHTML = `<p style="font-size:48px;margin-bottom:15px">📁</p><p style="font-size:18px;color:#333;margin-bottom:10px">اسحب الملف هنا أو اضغط للاختيار</p><input type="file" id="fileInput">`;
 document.getElementById('fileInput').onchange = (e) => handleFile(e.target.files[0]);
 convertBtn.disabled = true;
 }
