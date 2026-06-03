@@ -1,165 +1,356 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحويل الصور إلى PDF</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Tahoma', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-       .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
-        h1 { color: #667eea; margin-bottom: 10px; font-size: 28px; }
-        p { color: #666; margin-bottom: 30px; }
-        input[type="file"] {
-            display: none;
-        }
-       .upload-btn {
-            background: #667eea;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-       .upload-btn:hover { background: #5568d3; }
-        #convertBtn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            display: none;
-            width: 100%;
-            transition: 0.3s;
-        }
-        #convertBtn:hover { background: #218838; }
-        #preview { margin-top: 20px; }
-        #preview img {
-            max-width: 100px;
-            margin: 5px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-        }
-
-        /* صندوق الدعم - الزرار الأصفر */
-       .donate-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #fff8e1;
-            border-radius: 12px;
-            border: 2px dashed #ffc107;
-        }
-       .donate-box p {
-            margin-bottom: 12px;
-            color: #333;
-            font-size: 15px;
-        }
-       .donate-btn {
-            display: inline-block;
-            background: #ffdd00;
-            color: #000;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(255, 221, 0, 0.4);
-        }
-       .donate-btn:hover {
-            background: #ffcc00;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 221, 0, 0.6);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أدوات مجانية - تحويل وضغط الملفات</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Tahoma', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    min-height: 100vh;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 40px;
+}
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+.tool {
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 30px;
+    transition: 0.3s;
+    background: #fafafa;
+}
+.tool:hover {
+    border-color: #667eea;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+}
+.tool h2 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.tool p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+input[type="file"] {
+    display: block;
+    margin: 15px 0;
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
+button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    transition: 0.3s;
+}
+button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+}
+.status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #28a745;
+}
+.status.error {
+    background: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+.compression-control {
+    margin: 15px 0;
+}
+.compression-control label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+input[type="range"] {
+    width: 100%;
+}
+.quality-value {
+    color: #667eea;
+    font-weight: bold;
+}
+.donate-box {
+    margin-top: 40px;
+    padding: 25px;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    border-radius: 15px;
+    border: 2px dashed #ffc107;
+    text-align: center;
+}
+.donate-btn {
+    display: inline-block;
+    background: #ffdd00;
+    color: #000;
+    padding: 14px 35px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 17px;
+    margin-top: 10px;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>تحويل الصور إلى PDF 📄</h1>
-        <p>ارفع صورك وحولها ملف PDF واحد بسهولة</p>
+<div class="container">
+    <h1>أدوات الملفات المجانية 🚀</h1>
+    <p class="subtitle">حول واضغط ملفاتك 100% أونلاين ومن غير علامة مائية</p>
 
-        <label for="fileInput" class="upload-btn">اختر الصور</label>
-        <input type="file" id="fileInput" multiple accept="image/*">
+    <div class="tools-grid">
 
-        <div id="preview"></div>
-
-        <button id="convertBtn">تحويل ل PDF</button>
-
-        <!-- صندوق الدعم -->
-        <div class="donate-box">
-            <p>💛 لو الأداة عجبتك وفرت عليك وقت</p>
-            <a href="https://buymeacoffee.com/adeltlge" target="_blank" rel="noopener" class="donate-btn">
-                ادعمني بكوباية قهوة ☕
-            </a>
+        <!-- الأداة 1: PDF إلى Word -->
+        <div class="tool">
+            <h2>📄 PDF إلى Word</h2>
+            <p>حول ملف PDF إلى مستند Word قابل للتعديل</p>
+            <input type="file" id="pdfToWord" accept=".pdf">
+            <button onclick="convertPDFtoWord()">حول الآن</button>
+            <div id="status1" class="status"></div>
         </div>
+
+        <!-- الأداة 2: PDF إلى JPG -->
+        <div class="tool">
+            <h2>🖼️ PDF إلى JPG</h2>
+            <p>استخرج كل صفحات PDF كصور JPG عالية الجودة</p>
+            <input type="file" id="pdfToJpg" accept=".pdf">
+            <button onclick="convertPDFtoJPG()">حول الآن</button>
+            <div id="status2" class="status"></div>
+        </div>
+
+        <!-- الأداة 3: صور إلى PDF -->
+        <div class="tool">
+            <h2>📸 صور إلى PDF</h2>
+            <p>اجمع صورك في ملف PDF واحد مرتب</p>
+            <input type="file" id="imagesToPdf" accept="image/*" multiple>
+            <button onclick="convertImagesToPDF()">حول الآن</button>
+            <div id="status3" class="status"></div>
+        </div>
+
+        <!-- الأداة 4: ضغط الصور - الجديدة 🔥 -->
+        <div class="tool">
+            <h2>⚡ ضغط الصور</h2>
+            <p>قلل حجم الصورة 80% بدون ما تبوظ الجودة</p>
+            <input type="file" id="compressImage" accept="image/*" multiple>
+            <div class="compression-control">
+                <label>مستوى الضغط: <span class="quality-value" id="qualityValue">70%</span></label>
+                <input type="range" id="qualitySlider" min="10" max="95" value="70">
+            </div>
+            <button onclick="compressImages()">اضغط الصور</button>
+            <div id="status4" class="status"></div>
+        </div>
+
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const convertBtn = document.getElementById('convertBtn');
-        const preview = document.getElementById('preview');
-        let images = [];
+    <div class="donate-box">
+        <p>💛 الأدوات عجبتك؟ ادعمني بكوباية قهوة عشان أكمل</p>
+        <a href="https://buymeacoffee.com/adeltlge" target="_blank" rel="noopener" class="donate-btn">
+            ادعمني ☕
+        </a>
+    </div>
+</div>
 
-        fileInput.addEventListener('change', (e) => {
-            images = Array.from(e.target.files);
-            preview.innerHTML = '';
-            images.forEach(file => {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                preview.appendChild(img);
-            });
-            if(images.length > 0) convertBtn.style.display = 'block';
-        });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-        convertBtn.addEventListener('click', async () => {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-            for(let i = 0; i < images.length; i++) {
-                const img = await loadImage(images[i]);
-                const width = pdf.internal.pageSize.getWidth();
-                const height = (img.height * width) / img.width;
+// سلايدر الضغط
+document.getElementById('qualitySlider').addEventListener('input', (e) => {
+    document.getElementById('qualityValue').textContent = e.target.value + '%';
+});
 
-                if(i > 0) pdf.addPage();
-                pdf.addImage(img, 'JPEG', 0, 0, width, height);
+function showStatus(id, message, type) {
+    const status = document.getElementById(id);
+    status.className = 'status ' + type;
+    status.textContent = message;
+    status.style.display = 'block';
+    setTimeout(() => status.style.display = 'none', 5000);
+}
+
+// الأداة 1: PDF إلى Word
+async function convertPDFtoWord() {
+    const file = document.getElementById('pdfToWord').files[0];
+    if (!file) return showStatus('status1', 'اختار ملف PDF الأول', 'error');
+
+    showStatus('status1', 'جاري التحويل...', 'success');
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+
+    let text = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map(item => item.str).join(' ') + '\n\n';
+    }
+
+    const blob = new Blob([text], { type: 'application/msword' });
+    downloadFile(blob, file.name.replace('.pdf', '.doc'));
+    showStatus('status1', 'تم التحويل بنجاح ✓', 'success');
+}
+
+// الأداة 2: PDF إلى JPG
+async function convertPDFtoJPG() {
+    const file = document.getElementById('pdfToJpg').files[0];
+    if (!file) return showStatus('status2', 'اختار ملف PDF الأول', 'error');
+
+    showStatus('status2', 'جاري التحويل...', 'success');
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+        canvas.toBlob((blob) => {
+            downloadFile(blob, file.name.replace('.pdf', `_page${i}.jpg`));
+        }, 'image/jpeg', 0.95);
+    }
+
+    showStatus('status2', 'تم التحويل بنجاح ✓', 'success');
+}
+
+// الأداة 3: صور إلى PDF
+async function convertImagesToPDF() {
+    const files = document.getElementById('imagesToPdf').files;
+    if (files.length === 0) return showStatus('status3', 'اختار صور الأول', 'error');
+
+    showStatus('status3', 'جاري التحويل...', 'success');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    for (let i = 0; i < files.length; i++) {
+        const imgData = await readFile(files[i]);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0);
+    }
+
+    pdf.save('images.pdf');
+    showStatus('status3', 'تم التحويل بنجاح ✓', 'success');
+}
+
+// الأداة 4: ضغط الصور - الجديدة 🔥
+async function compressImages() {
+    const files = document.getElementById('compressImage').files;
+    const quality = document.getElementById('qualitySlider').value / 100;
+
+    if (files.length === 0) return showStatus('status4', 'اختار صور الأول', 'error');
+
+    showStatus('status4', 'جاري الضغط...', 'success');
+
+    for (let i = 0; i < files.length; i++) {
+        const img = await loadImage(files[i]);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        canvas.toBlob((blob) => {
+            const originalSize = (files[i].size / 1024).toFixed(2);
+            const newSize = (blob.size / 1024).toFixed(2);
+            const saved = ((1 - blob.size / files[i].size) * 100).toFixed(0);
+
+            downloadFile(blob, files[i].name.replace(/\.[^/.]+$/, "") + `_compressed.jpg`);
+
+            if (i === files.length - 1) {
+                showStatus('status4', `تم الضغط! وفرت ${saved}% من الحجم ✓`, 'success');
             }
+        }, 'image/jpeg', quality);
+    }
+}
 
-            pdf.save('images-to-pdf.pdf');
-        });
+function loadImage(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 
-        function loadImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => resolve(img);
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    </script>
+function readFile(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+    });
+}
+
+function downloadFile(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
 </body>
 </html>
