@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- علامة التحقق التي أرسلتها -->
+    <meta name="mnd-ver" content="jecxmin1wmaz7ffmtsdqw" />
+    
+    <!-- تحسين SEO -->
     <title>تحويل الصور إلى PDF أونلاين مجاناً - JPG PNG إلى PDF بدون علامة مائية</title>
     <meta name="description" content="حول صور JPG, PNG إلى ملف PDF واحد أونلاين وبالمجان. سريع، آمن، بدون تسجيل. يعمل على الموبايل والكمبيوتر.">
     <meta name="keywords" content="تحويل الصور إلى pdf, تحويل jpg إلى pdf, تحويل png إلى pdf, دمج الصور pdf">
-    <!-- كود التحقق من منصة الإعلانات -->
-    <meta name="mnd-ver" content="jecxmin1wmaz7ffmtsdqw" />
+    
     <!-- مكتبة jsPDF للصور -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- مكتبة html2canvas للنص العربي -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -148,15 +152,22 @@
 </head>
 <body>
     <div class="container">
+        <!-- العنوان الرئيسي H1 -->
         <h1>📄 تحويل الصور إلى PDF أونلاين</h1>
         <p>حول صورك إلى ملف PDF واحد مجاناً وسرعة</p>
+        
+        <!-- شعارات الثقة -->
         <div class="trust-badges">
             <div class="trust-badge"><span>🛡️</span> 100% آمن وخاص</div>
             <div class="trust-badge"><span>❌</span> بدون علامة مائية</div>
             <div class="trust-badge"><span>📱</span> يعمل على الموبايل</div>
             <div class="trust-badge"><span>⚡</span> سريع جداً</div>
         </div>
+        
+        <!-- عداد الثقة -->
         <div class="counter">✅ تم تحويل <strong>+50,000</strong> صورة</div>
+        
+        <!-- القسم الأول: تحويل الصور -->
         <div class="section">
             <h2>🖼️ تحويل الصور إلى PDF</h2>
             <p>اختر الصور التي تريد تحويلها إلى ملف PDF واحد</p>
@@ -165,6 +176,8 @@
             <button onclick="convertImagesToPDF()">🔄 تحويل الصور</button>
             <div id="statusImages"></div>
             <a id="downloadImages" download="images.pdf">📥 تحميل PDF</a>
+            
+            <!-- زر المشاركة -->
             <div class="share-section" id="shareSection">
                 <p>🎉 تم التحويل بنجاح! شارك الأداة مع أصدقائك</p>
                 <div class="share-buttons">
@@ -173,11 +186,15 @@
                     <a href="#" id="copyLink">📋 نسخ الرابط</a>
                 </div>
             </div>
+            
+            <!-- إعلان (سيتم وضع كود الإعلان هنا) -->
             <div class="ad-section">
-                <!-- كود الإعلان من المنصة سيتم وضعه هنا -->
-                <!-- يمكنك وضع <script src="..."></script> هنا -->
+                <!-- ضع كود الإعلان هنا -->
+                <!-- <script src="https://..."></script> -->
             </div>
         </div>
+
+        <!-- القسم الثاني: تحويل النص -->
         <div class="section">
             <h2>📝 تحويل النص إلى PDF</h2>
             <p>اكتب النص العربي أو الإنجليزي الذي تريد تحويله</p>
@@ -187,8 +204,11 @@
             <a id="downloadText" download="text.pdf">📥 تحميل PDF</a>
         </div>
     </div>
+
     <script>
+        // ====== أداة تحويل الصور ======
         let selectedFiles = [];
+
         document.getElementById('imageInput').addEventListener('change', function(e) {
             selectedFiles = Array.from(e.target.files);
             const preview = document.getElementById('preview');
@@ -199,18 +219,22 @@
                 preview.appendChild(img);
             });
         });
+
         async function convertImagesToPDF() {
             if (selectedFiles.length === 0) {
                 alert('رجاء اختر صورة واحدة على الأقل.');
                 return;
             }
+
             const status = document.getElementById('statusImages');
             const downloadLink = document.getElementById('downloadImages');
             const shareSection = document.getElementById('shareSection');
             status.textContent = '⏳ جاري التحويل...';
             shareSection.style.display = 'none';
+
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
+
             for (let i = 0; i < selectedFiles.length; i++) {
                 const file = selectedFiles[i];
                 const imgData = await new Promise((resolve) => {
@@ -218,17 +242,21 @@
                     reader.onload = (e) => resolve(e.target.result);
                     reader.readAsDataURL(file);
                 });
+
                 if (i > 0) pdf.addPage();
                 const imgProps = pdf.getImageProperties(imgData);
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                 pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
             }
+
             const pdfBlob = pdf.output('blob');
             const url = URL.createObjectURL(pdfBlob);
             downloadLink.href = url;
             downloadLink.style.display = 'inline-block';
             status.textContent = '✅ تم التحويل بنجاح!';
+            
+            // تفعيل زر المشاركة
             shareSection.style.display = 'block';
             document.getElementById('shareWhatsApp').href = `https://api.whatsapp.com/send?text=أداة مجانية لتحويل الصور إلى PDF: https://tlgooo.github.io/image-to-pdf-tool/`;
             document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=https://tlgooo.github.io/image-to-pdf-tool/`;
@@ -237,15 +265,19 @@
                 alert('تم نسخ الرابط!');
             };
         }
+
+        // ====== أداة تحويل النص (تدعم العربية) ======
         async function convertTextToPDF() {
             const text = document.getElementById('textInput').value;
             if (text.trim() === '') {
                 alert('رجاء اكتب نصاً أولاً.');
                 return;
             }
+
             const status = document.getElementById('statusText');
             const downloadLink = document.getElementById('downloadText');
             status.textContent = '⏳ جاري التحويل...';
+
             const tempDiv = document.createElement('div');
             tempDiv.style.width = '210mm';
             tempDiv.style.padding = '20mm';
@@ -257,14 +289,18 @@
             tempDiv.style.whiteSpace = 'pre-wrap';
             tempDiv.style.wordWrap = 'break-word';
             tempDiv.textContent = text;
+
             document.body.appendChild(tempDiv);
+
             try {
                 const canvas = await html2canvas(tempDiv, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff'
                 });
+
                 document.body.removeChild(tempDiv);
+
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -272,6 +308,7 @@
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                 pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
                 const pdfBlob = pdf.output('blob');
                 const url = URL.createObjectURL(pdfBlob);
                 downloadLink.href = url;
