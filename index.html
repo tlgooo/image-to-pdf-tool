@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
         }
-       .container {
+      .container {
             background: white;
             padding: 40px;
             border-radius: 20px;
@@ -26,18 +26,8 @@
         }
         h1 { color: #667eea; margin-bottom: 10px; font-size: 28px; }
         p { color: #666; margin-bottom: 20px; }
-       .limit-notice {
-            background: #d4edda;
-            border: 1px solid #28a745;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #155724;
-            font-weight: bold;
-        }
         input[type="file"] { display: none; }
-       .upload-btn {
+      .upload-btn {
             background: #667eea;
             color: white;
             padding: 15px 30px;
@@ -48,8 +38,9 @@
             font-size: 16px;
             transition: 0.3s;
         }
-       .upload-btn:hover { background: #5568d3; }
-        #convertBtn, #proBtn {
+      .upload-btn:hover { background: #5568d3; }
+        #convertBtn {
+            background: #28a745;
             color: white;
             border: none;
             padding: 15px 40px;
@@ -59,13 +50,8 @@
             display: none;
             width: 100%;
             transition: 0.3s;
-            margin-top: 10px;
-            font-weight: bold;
         }
-        #convertBtn { background: #28a745; }
         #convertBtn:hover { background: #218838; }
-        #proBtn { background: #ff6b00; }
-        #proBtn:hover { background: #e55f00; }
         #preview { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; }
         #preview img {
             max-width: 80px;
@@ -73,23 +59,14 @@
             border-radius: 8px;
             border: 2px solid #ddd;
         }
-       .error-msg {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-            background: #f8d7da;
-            padding: 10px;
-            border-radius: 8px;
-        }
-       .donate-box {
+      .donate-box {
             margin-top: 30px;
             padding: 20px;
             background: #fff8e1;
             border-radius: 12px;
             border: 2px dashed #ffc107;
         }
-       .donate-btn {
+      .donate-btn {
             display: inline-block;
             background: #ffdd00;
             color: #000;
@@ -104,23 +81,13 @@
 <body>
     <div class="container">
         <h1>تحويل الصور إلى PDF 📄</h1>
-        <p>ارفع صورك وحولها ملف PDF واحد بسهولة</p>
-
-        <div class="limit-notice">
-            ✅ النسخة المجانية: 5 صور كحد أقصى - بدون علامة مائية
-        </div>
+        <p>ارفع صورك وحولها ملف PDF واحد بسهولة - بدون حدود</p>
 
         <label for="fileInput" class="upload-btn">اختر الصور</label>
         <input type="file" id="fileInput" multiple accept="image/*">
 
         <div id="preview"></div>
-        <div class="error-msg" id="errorMsg">
-            ⚠️ عندك أكتر من 5 صور<br>
-            للتحويل بدون حدود: ابعت 100ج فودافون كاش + الصور على واتساب
-        </div>
-
-        <button id="convertBtn">تحويل 5 صور مجاناً</button>
-        <button id="proBtn">تحويل بدون حدود - 100ج 💎</button>
+        <button id="convertBtn">تحويل إلى PDF</button>
 
         <div class="donate-box">
             <p>💛 لو الأداة عجبتك</p>
@@ -130,23 +97,16 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
         const fileInput = document.getElementById('fileInput');
         const convertBtn = document.getElementById('convertBtn');
-        const proBtn = document.getElementById('proBtn');
         const preview = document.getElementById('preview');
-        const errorMsg = document.getElementById('errorMsg');
         let images = [];
-
-        // رقمك اتظبط خلاص
-        const VODAFONE_NUMBER = '01062183539';
-        const WHATSAPP_NUMBER = '201062183539';
 
         fileInput.addEventListener('change', (e) => {
             images = Array.from(e.target.files);
             preview.innerHTML = '';
-            errorMsg.style.display = 'none';
 
             images.forEach(file => {
                 const img = document.createElement('img');
@@ -155,25 +115,18 @@
             });
 
             if(images.length > 0) {
-                if(images.length <= 5) {
-                    convertBtn.style.display = 'block';
-                    proBtn.style.display = 'none';
-                } else {
-                    convertBtn.style.display = 'none';
-                    proBtn.style.display = 'block';
-                    errorMsg.style.display = 'block';
-                }
+                convertBtn.style.display = 'block';
             }
         });
 
         convertBtn.addEventListener('click', async () => {
-            await createPDF(images.slice(0, 5), 'images-free.pdf');
-        });
+            convertBtn.textContent = 'جاري التحويل...';
+            convertBtn.disabled = true;
 
-        proBtn.addEventListener('click', () => {
-            const message = `السلام عليكم يا عادل 👋\nعايز النسخة Pro لتحويل الصور PDF\nعدد الصور: ${images.length}\nهحول 100ج فودافون كاش على رقم ${VODAFONE_NUMBER} وهبعتلك سكرين + الصور`;
+            await createPDF(images, 'images.pdf');
 
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            convertBtn.textContent = 'تحويل إلى PDF';
+            convertBtn.disabled = false;
         });
 
         async function createPDF(imgArray, filename) {
