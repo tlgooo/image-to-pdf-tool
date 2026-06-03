@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; background: #f0f4f8; text-align: center; padding: 30px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+       .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h1 { color: #1a237e; }
         h2 { color: #1a237e; border-bottom: 2px solid #1a237e; padding-bottom: 10px; }
         input[type="file"] { width: 100%; padding: 10px; border: 2px dashed #1a237e; border-radius: 10px; margin: 15px 0; }
@@ -17,10 +17,16 @@
         button:hover { background: #283593; }
         #preview img { max-width: 100px; border-radius: 8px; margin: 5px; }
         #download { display: none; margin-top: 20px; }
-        .trust-badges { display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
-        .trust-badge { font-size: 14px; color: #555; }
-        .counter { background: #e8eaf6; padding: 10px; border-radius: 10px; margin: 20px 0; font-weight: bold; }
-        .ad-section { margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 8px; font-size: 12px; color: #888; }
+       .trust-badges { display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+       .trust-badge { font-size: 14px; color: #555; }
+       .counter { background: #e8eaf6; padding: 10px; border-radius: 10px; margin: 20px 0; font-weight: bold; }
+
+        /* زرار الدعم */
+       .donate-box { text-align:center; margin-top:25px; padding:20px; border-top:1px solid #eee; }
+       .donate-btn { background:#FFDD00; color:#000; padding:14px 28px; border-radius:12px;
+                      text-decoration:none; font-weight:bold; font-size:16px; display:inline-block;
+                      box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:0.3s; }
+       .donate-btn:hover { transform: translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body>
@@ -36,6 +42,17 @@
         <input type="file" id="imageInput" accept="image/*" multiple>
         <div id="preview"></div>
         <button onclick="convert()">🔄 تحويل الصور</button>
+
+        <!-- زرار الدعم هنا -->
+        <div class="donate-box">
+          <a href="https://buymeacoffee.com/Adeltlge" target="_blank" class="donate-btn">
+            ☕ ادعمني بكوباية قهوة - $1
+          </a>
+          <p style="font-size:13px; color:#666; margin-top:10px;">
+            الأداة مجانية 100% بدون إعلانات. دعمك بيساعدني أطورها أكتر ❤️
+          </p>
+        </div>
+
         <div id="status"></div>
         <a id="download" download="images.pdf">📥 تحميل PDF</a>
         <hr>
@@ -44,9 +61,6 @@
         <button onclick="convertText()">🔄 تحويل النص</button>
         <div id="statusText"></div>
         <a id="downloadText" download="text.pdf">📥 تحميل PDF</a>
-        <div class="ad-section">
-            <!-- ضع كود الإعلان هنا -->
-        </div>
     </div>
     <script>
         let selectedFiles = [];
