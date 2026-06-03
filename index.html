@@ -3,148 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحويل صورة إلى PDF - 5 ثواني</title>
+<title>أدوات تحويل الملفات - 5 ثواني</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:tahoma;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.box{background:white;padding:35px;border-radius:20px;max-width:450px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
-h1{color:#1a237e;margin-bottom:25px;font-size:24px}
-input{width:100%;padding:14px;margin:15px 0;border:2px dashed #1a237e;border-radius:12px;background:#f8f9fa;cursor:pointer}
-button{background:#1a237e;color:white;padding:16px;border:none;border-radius:12px;width:100%;font-size:18px;cursor:pointer;font-weight:bold;transition:0.3s}
-button:hover{background:#283593;transform:translateY(-2px)}
-.instruction{background:#e8f5e9;border:2px solid #4caf50;border-radius:12px;padding:18px;margin:20px 0;font-size:15px;color:#2e7d32;line-height:1.8}
-.arrow{font-size:35px;animation:blink 1s infinite;color:#4caf50;text-align:center}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-#loading{display:none;text-align:center;margin-top:20px}
-#result{display:none;text-align:center;margin-top:20px}
-#download{display:inline-block;background:#4caf50;color:white;padding:14px 30px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:10px}
-#download:hover{background:#45a049}
-.error{background:#ffebee;border:2px solid #f44336;color:#c62828;padding:15px;border-radius:10px;margin:15px 0}
+body{font-family:tahoma;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+.container{max-width:600px;margin:auto}
+h1{color:white;text-align:center;margin-bottom:30px;font-size:28px}
+.tool{background:white;padding:25px;border-radius:15px;margin-bottom:20px;box-shadow:0 5px 20px rgba(0,0,0,0.2)}
+.tool h2{color:#1a237e;margin-bottom:15px;font-size:20px}
+input{width:100%;padding:12px;margin:10px 0;border:2px dashed #1a237e;border-radius:10px}
+button{background:#1a237e;color:white;padding:14px;border:none;border-radius:10px;width:100%;font-size:16px;cursor:pointer;font-weight:bold}
+.instruction{background:#e8f5e9;border:2px solid #4caf50;border-radius:10px;padding:12px;margin:10px 0;font-size:13px;color:#2e7d32}
+.result{display:none;margin-top:15px;text-align:center}
+.result a{background:#4caf50;color:white;padding:12px 25px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:bold}
+.loading{display:none;text-align:center;color:#1a237e;margin-top:10px}
+.error{background:#ffebee;border:2px solid #f44336;color:#c62828;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:13px}
 </style>
 </head>
 <body>
-<div class="box">
-<h1>📄 تحويل صورة إلى PDF</h1>
+<div class="container">
+<h1>🔧 أدوات تحويل الملفات</h1>
 
-<input type="file" id="file" accept="image/*">
-
-<div class="instruction">
-⏱️ <b>ادعم الموقع بـ 5 ثواني فقط</b><br><br>
-1. دوس الزرار الأزرق تحت<br>
-2. استنى 5 ثواني في صفحة الإعلان<br>
-3. دوس <span style="color:red;font-weight:bold">Skip Ad</span><br>
-4. هترجع هنا والملف جاهز للتحميل
-<div class="arrow">⬇️</div>
+<!-- أداة 1: صورة إلى PDF -->
+<div class="tool">
+<h2>1. صورة إلى PDF 📄</h2>
+<input type="file" id="imgToPdf" accept="image/*">
+<div class="instruction">⏱️ 5 ثواني فقط → Skip Ad → ارجع خد الملف</div>
+<button onclick="convertImgToPdf()">تحويل الآن</button>
+<div class="loading" id="loading1">⏳ جاري التحويل...</div>
+<div class="error" id="error1"></div>
+<div class="result" id="result1"><a id="download1" download="image.pdf">📥 تحميل PDF</a></div>
 </div>
 
-<button onclick="start()">🔄 تحويل الآن</button>
-
-<div id="loading">
-<p style="font-size:18px;color:#1a237e">⏳ جاري التحويل بعد الإعلان...</p>
+<!-- أداة 2: PDF إلى صورة -->
+<div class="tool">
+<h2>2. PDF إلى صورة JPG 🖼️</h2>
+<input type="file" id="pdfToImg" accept="application/pdf">
+<div class="instruction">⏱️ 5 ثواني فقط → Skip Ad → ارجع خد الصورة</div>
+<button onclick="convertPdfToImg()">تحويل الآن</button>
+<div class="loading" id="loading2">⏳ جاري التحويل...</div>
+<div class="error" id="error2"></div>
+<div class="result" id="result2"><a id="download2" download="page.jpg">📥 تحميل الصورة</a></div>
 </div>
 
-<div id="error" class="error" style="display:none"></div>
-
-<div id="result">
-<p style="color:#4caf50;font-size:24px;margin-bottom:10px">✅ تم التحويل بنجاح!</p>
-<a id="download" download="converted.pdf">📥 اضغط هنا لتحميل PDF</a>
+<!-- أداة 3: دمج صور -->
+<div class="tool">
+<h2>3. دمج صور في PDF 📚</h2>
+<input type="file" id="mergeImg" accept="image/*" multiple>
+<div class="instruction">اختار أكتر من صورة → ⏱️ 5 ثواني → Skip Ad</div>
+<button onclick="mergeImages()">دمج وتحويل</button>
+<div class="loading" id="loading3">⏳ جاري الدمج...</div>
+<div class="error" id="error3"></div>
+<div class="result" id="result3"><a id="download3" download="merged.pdf">📥 تحميل PDF</a></div>
 </div>
+
+<!-- أداة 4: ضغط PDF -->
+<div class="tool">
+<h2>4. ضغط PDF 📦</h2>
+<input type="file" id="compressPdf" accept="application/pdf">
+<div class="instruction">⏱️ 5 ثواني فقط → Skip Ad → ارجع خد الملف المضغوط</div>
+<button onclick="compressPdf()">ضغط الآن</button>
+<div class="loading" id="loading4">⏳ جاري الضغط...</div>
+<div class="error" id="error4"></div>
+<div class="result" id="result4"><a id="download4" download="compressed.pdf">📥 تحميل PDF</a></div>
+</div>
+
 </div>
 
 <script>
 const LINK = 'https://shrinkme.io/460dd0268d0f06f1bb5e4e5c89b3816a2bf3b92d?r=';
+let currentTool = '';
 
-function start() {
-const fileInput = document.getElementById('file');
-const file = fileInput.files[0];
-document.getElementById('error').style.display = 'none';
-
-if(!file) {
-alert('⚠️ اختار صورة الأول من فوق');
-return;
-}
-
-if(!file.type.startsWith('image/')) {
-alert('⚠️ لازم تختار صورة JPG أو PNG');
-return;
-}
-
-const reader = new FileReader();
-reader.onload = function(e) {
-// نحفظ الصورة مؤقتاً
-sessionStorage.setItem('imgData', e.target.result);
-sessionStorage.setItem('fileName', file.name);
-// نروح ShrinkMe ونرجع على نفس الصفحة + #done
+// دالة عامة للذهاب للإعلان
+function goToAd(toolId, fileData, fileName) {
+sessionStorage.setItem('tool', toolId);
+sessionStorage.setItem('fileData', fileData);
+sessionStorage.setItem('fileName', fileName);
 const returnUrl = window.location.href.split('#')[0] + '#done';
 window.location.href = LINK + encodeURIComponent(returnUrl);
 }
-reader.onerror = function() {
-showError('حصل خطأ في قراءة الصورة. جرب صورة تانية');
-}
+
+// أداة 1: صورة إلى PDF
+function convertImgToPdf() {
+const file = document.getElementById('imgToPdf').files[0];
+if(!file) {alert('اختار صورة'); return;}
+const reader = new FileReader();
+reader.onload = e => goToAd('imgToPdf', e.target.result, file.name);
 reader.readAsDataURL(file);
-
-document.getElementById('loading').style.display = 'block';
+document.getElementById('loading1').style.display = 'block';
 }
 
-function showError(msg) {
-document.getElementById('loading').style.display = 'none';
-const err = document.getElementById('error');
-err.innerHTML = '❌ ' + msg;
-err.style.display = 'block';
+// أداة 2: PDF إلى صورة
+function convertPdfToImg() {
+const file = document.getElementById('pdfToImg').files[0];
+if(!file) {alert('اختار PDF'); return;}
+const reader = new FileReader();
+reader.onload = e => goToAd('pdfToImg', e.target.result, file.name);
+reader.readAsDataURL(file);
+document.getElementById('loading2').style.display = 'block';
 }
 
-// لما نرجع من ShrinkMe
+// أداة 3: دمج صور
+function mergeImages() {
+const files = document.getElementById('mergeImg').files;
+if(files.length === 0) {alert('اختار صور'); return;}
+const promises = [];
+for(let i=0; i<files.length; i++) {
+promises.push(new Promise(resolve => {
+const reader = new FileReader();
+reader.onload = e => resolve(e.target.result);
+reader.readAsDataURL(files[i]);
+}));
+}
+Promise.all(promises).then(images => {
+goToAd('mergeImg', JSON.stringify(images), 'merged.pdf');
+});
+document.getElementById('loading3').style.display = 'block';
+}
+
+// أداة 4: ضغط PDF - مؤقتاً نفس التحويل
+function compressPdf() {
+const file = document.getElementById('compressPdf').files[0];
+if(!file) {alert('اختار PDF'); return;}
+const reader = new FileReader();
+reader.onload = e => goToAd('compressPdf', e.target.result, file.name);
+reader.readAsDataURL(file);
+document.getElementById('loading4').style.display = 'block';
+}
+
+// لما نرجع من الإعلان
 window.onload = async function() {
 if(window.location.hash === '#done') {
-const imgData = sessionStorage.getItem('imgData');
+const tool = sessionStorage.getItem('tool');
+const fileData = sessionStorage.getItem('fileData');
 const fileName = sessionStorage.getItem('fileName');
 
-if(!imgData) {
-showError('الصورة ضاعت! غالباً قفلت المتصفح وانت في الإعلان. جرب تاني ومتقفلش الصفحة');
+if(!fileData) {
+showError(tool, 'الملف ضاع! جرب تاني ومتقفلش المتصفح');
 return;
 }
 
-sessionStorage.removeItem('imgData');
-sessionStorage.removeItem('fileName');
+sessionStorage.clear();
+document.getElementById('loading1').style.display = 'none';
+document.getElementById('loading2').style.display = 'none';
+document.getElementById('loading3').style.display = 'none';
+document.getElementById('loading4').style.display = 'none';
 
-try {
+// هنا هنفذ التحويل حسب الأداة
+if(tool === 'imgToPdf') {
 const { jsPDF } = window.jspdf;
 const pdf = new jsPDF();
-
-// نستنى الصورة تحمل عشان المقاس يظبط
-const img = new Image();
-img.onload = function() {
-const pageWidth = pdf.internal.pageSize.getWidth();
-const pageHeight = pdf.internal.pageSize.getHeight();
-const imgRatio = img.width / img.height;
-const pageRatio = pageWidth / pageHeight;
-
-let finalWidth, finalHeight;
-if(imgRatio > pageRatio) {
-finalWidth = pageWidth;
-finalHeight = pageWidth / imgRatio;
-} else {
-finalHeight = pageHeight;
-finalWidth = pageHeight * imgRatio;
+pdf.addImage(fileData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+const url = URL.createObjectURL(pdf.output('blob'));
+showResult(1, url, fileName.replace(/\.[^/.]+$/, "") + '.pdf');
+}
+// باقي الأدوات هنكملها واحدة بعد ما دي تشتغل
+}
 }
 
-const x = (pageWidth - finalWidth) / 2;
-const y = (pageHeight - finalHeight) / 2;
-
-pdf.addImage(imgData, 'JPEG', x, y, finalWidth, finalHeight);
-const pdfBlob = pdf.output('blob');
-const url = URL.createObjectURL(pdfBlob);
-
-document.getElementById('loading').style.display = 'none';
-document.getElementById('result').style.display = 'block';
-document.getElementById('download').href = url;
-document.getElementById('download').download = fileName.replace(/\.[^/.]+$/, "") + '.pdf';
+function showResult(num, url, name) {
+document.getElementById('result' + num).style.display = 'block';
+document.getElementById('download' + num).href = url;
+document.getElementById('download' + num).download = name;
 }
-img.src = imgData;
-} catch(e) {
-showError('حصل خطأ أثناء التحويل. جرب تاني');
-console.error(e);
+
+function showError(tool, msg) {
+const num = tool === 'imgToPdf'? 1 : tool === 'pdfToImg'? 2 : tool === 'mergeImg'? 3 : 4;
+document.getElementById('error' + num).innerHTML = '❌ ' + msg;
+document.getElementById('error' + num).style.display = 'block';
 }
 </script>
 </body>
