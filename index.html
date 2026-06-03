@@ -76,42 +76,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>📄
-            أدوات تحويل PDF</h1>
-     <div 
-        <div style="margin: 20px 0;">
-    <div style="max-width: 600px; margin: 20px auto; position: relative;">
-    <div style="display: flex; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0;">
-<div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
-   
-</div>
-</div>
-    </div>
-    <div 
-    </div>
-</div>
-
-<script>
-    let currentIndex = 0;
-    const images = document.querySelectorAll('.slider-img');
-
-    function showImage(index) {
-        images.forEach(img => img.style.display = 'none');
-        images[index].style.display = 'block';
-        currentIndex = index;
-    }
-
-    // Auto slide every 3 seconds
-    setInterval(() => {
-        currentIndex = (currentIndex + 1) % images.length;
-        showImage(currentIndex);
-    }, 3000);
-
-    // Show first image
-    showImage(0);
-</script>
-</div>
+        <h1>📄 أدوات تحويل PDF</h1>
+        
         <!-- القسم الأول: تحويل الصور -->
         <div class="section">
             <h2>🖼️ تحويل الصور إلى PDF</h2>
@@ -133,6 +99,9 @@
             <a id="downloadText" download="text.pdf">📥 تحميل PDF</a>
         </div>
     </div>
+
+    <!-- كود إعلان Adsterra -->
+    <script src="https://pl29622560.effectivecpmnetwork.com/94/99/37/949937dd220ac88856dcab05576627ff.js"></script>
 
     <script>
         // ====== أداة تحويل الصور ======
@@ -239,12 +208,9 @@
             } catch (error) {
                 status.textContent = '❌ حدث خطأ. حاول مرة أخرى.';
                 console.error(error);
-                // إزالة العنصر المؤقت في حالة الخطأ
                 if (tempDiv.parentNode) document.body.removeChild(tempDiv);
             }
         }
     </script>
-    <script src="https://pl29622560.effectivecpmnetwork.com/94/99/37/949937dd220ac88856dcab05576627ff.js"></script>
-
 </body>
 </html>
