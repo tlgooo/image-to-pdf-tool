@@ -2,20 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تحويل صورة إلى PDF</title>
+<title>تحويل صورة إلى PDF - 5 ثواني فقط</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body{font-family:tahoma;text-align:center;padding:30px;background:#f0f4f8}
 .box{background:white;padding:30px;border-radius:15px;max-width:500px;margin:auto;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
 input{width:100%;padding:12px;margin:15px 0;border:2px dashed #1a237e;border-radius:10px}
 button{background:#1a237e;color:white;padding:15px;border:none;border-radius:8px;width:100%;font-size:18px;cursor:pointer;font-weight:bold}
-button:hover{background:#283593}
-.instruction{background:#fff3cd;border:2px solid #ffc107;border-radius:10px;padding:15px;margin:15px 0;font-size:16px;color:#856404}
-.arrow{font-size:40px;animation:blink 1s infinite;color:#ff5722}
+.instruction{background:#e8f5e9;border:2px solid #4caf50;border-radius:10px;padding:15px;margin:15px 0;font-size:16px;color:#2e7d32}
+.arrow{font-size:40px;animation:blink 1s infinite;color:#4caf50}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 #loading{display:none;margin-top:20px}
 #result{display:none;margin-top:20px}
-.step-num{background:#1a237e;color:white;border-radius:50%;width:30px;height:30px;display:inline-block;line-height:30px;font-weight:bold;margin-left:5px}
 </style>
 </head>
 <body>
@@ -25,49 +23,38 @@ button:hover{background:#283593}
 <input type="file" id="file" accept="image/*">
 
 <div class="instruction">
-<span class="step-num">1</span> اختار الصورة من فوق 👆<br><br>
-<span class="step-num">2</span> دوس الزرار الأزرق تحت<br>
+ادعم الموقع بـ 5 ثواني فقط ⏱️<br>
+دوس الزرار → استنى 5 ثواني → دوس <b style="color:red">Skip Ad</b> → ارجع خد ملفك
 <div class="arrow">⬇️</div>
 </div>
 
-<button onclick="start()">🔄 اضغط هنا للتحويل - 5 ثواني فقط</button>
-
-<div class="instruction" id="waitMsg" style="display:none">
-<span class="step-num">3</span> هيفتحلك صفحة إعلان<br>
-<span class="step-num">4</span> استنى <b>5 ثواني</b> ودوس <b style="color:red">Continue</b> أو <b style="color:red">تخطي الإعلان</b><br>
-<div class="arrow">⬇️</div>
-<span class="step-num">5</span> هترجع هنا أوتوماتيك والملف يتحمل
-</div>
+<button onclick="start()">🔄 تحويل الآن</button>
 
 <div id="loading">
-<p style="font-size:18px;color:#1a237e">⏳ جاري التحويل بعد الإعلان...</p>
+<p style="font-size:18px;color:#1a237e">⏳ جاري التحويل...</p>
 </div>
 
 <div id="result">
-<p style="color:green;font-size:22px">✅ تم التحويل بنجاح!</p>
-<a id="download" download="file.pdf" style="font-size:18px;color:#1a237e">📥 اضغط هنا لتحميل PDF</a>
+<p style="color:green;font-size:22px">✅ تم!</p>
+<a id="download" download="file.pdf" style="font-size:18px">📥 تحميل PDF</a>
 </div>
 </div>
 
 <script>
-const LINK = 'https://link-hub.net/6200670/XnSNDzlHKFi1?r=';
-let fileData = null;
+// الكود بتاعك من ShrinkMe
+const LINK = 'https://shrinkme.io/460dd0268d0f06f1bb5e4e5c89b3816a2bf3b92d?r=';
 
 function start() {
 if(!document.getElementById('file').files[0]) {
-alert('⚠️ اختار صورة الأول من فوق');
+alert('اختار صورة الأول');
 return;
 }
-
-document.getElementById('waitMsg').style.display = 'block';
 
 const file = document.getElementById('file').files[0];
 const reader = new FileReader();
 reader.onload = function(e) {
-fileData = e.target.result;
-localStorage.setItem('fileData', fileData);
-localStorage.setItem('fileName', file.name);
-// نروح Linkvertise
+localStorage.setItem('fileData', e.target.result);
+// نروح ShrinkMe 5 ثواني ونرجع
 window.location.href = LINK + encodeURIComponent(window.location.href + '#done');
 }
 reader.readAsDataURL(file);
