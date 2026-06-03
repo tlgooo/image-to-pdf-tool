@@ -20,22 +20,9 @@ body {
     padding: 40px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-h1 {
-    text-align: center;
-    color: #667eea;
-    margin-bottom: 10px;
-    font-size: 32px;
-}
-.subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 40px;
-}
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 25px;
-}
+h1 { text-align: center; color: #667eea; margin-bottom: 10px; font-size: 32px; }
+.subtitle { text-align: center; color: #666; margin-bottom: 40px; }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
 .tool {
     border: 2px solid #e0e0e0;
     border-radius: 15px;
@@ -48,19 +35,8 @@ h1 {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
 }
-.tool h2 {
-    color: #667eea;
-    margin-bottom: 15px;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.tool p {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
+.tool h2 { color: #667eea; margin-bottom: 15px; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+.tool p { color: #666; font-size: 14px; margin-bottom: 20px; }
 input[type="file"] {
     display: block;
     margin: 15px 0;
@@ -83,14 +59,7 @@ button {
     width: 100%;
     transition: 0.3s;
 }
-button:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+button:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
 .status {
     margin-top: 15px;
     padding: 12px;
@@ -98,32 +67,12 @@ button:disabled {
     font-weight: bold;
     display: none;
 }
-.status.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #28a745;
-}
-.status.error {
-    background: #f8d7da;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-}
-.compression-control {
-    margin: 15px 0;
-}
-.compression-control label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: bold;
-}
-input[type="range"] {
-    width: 100%;
-}
-.quality-value {
-    color: #667eea;
-    font-weight: bold;
-}
+.status.success { background: #d4edda; color: #155724; border: 1px solid #28a745; }
+.status.error { background: #f8d7da; color: #dc3545; border: 1px solid #dc3545; }
+.compression-control { margin: 15px 0; }
+.compression-control label { display: block; margin-bottom: 8px; color: #333; font-weight: bold; }
+input[type="range"] { width: 100%; }
+.quality-value { color: #667eea; font-weight: bold; }
 .donate-box {
     margin-top: 40px;
     padding: 25px;
@@ -143,6 +92,12 @@ input[type="range"] {
     font-size: 17px;
     margin-top: 10px;
 }
+.earning-note {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -152,34 +107,37 @@ input[type="range"] {
 
     <div class="tools-grid">
 
-        <!-- الأداة 1: PDF إلى Word -->
+        <!-- الأداة 1 -->
         <div class="tool">
             <h2>📄 PDF إلى Word</h2>
             <p>حول ملف PDF إلى مستند Word قابل للتعديل</p>
             <input type="file" id="pdfToWord" accept=".pdf">
-            <button onclick="convertPDFtoWord()">حول الآن</button>
+            <button onclick="goShortlink('convertPDFtoWord')">حول الآن</button>
+            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
             <div id="status1" class="status"></div>
         </div>
 
-        <!-- الأداة 2: PDF إلى JPG -->
+        <!-- الأداة 2 -->
         <div class="tool">
             <h2>🖼️ PDF إلى JPG</h2>
             <p>استخرج كل صفحات PDF كصور JPG عالية الجودة</p>
             <input type="file" id="pdfToJpg" accept=".pdf">
-            <button onclick="convertPDFtoJPG()">حول الآن</button>
+            <button onclick="goShortlink('convertPDFtoJPG')">حول الآن</button>
+            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
             <div id="status2" class="status"></div>
         </div>
 
-        <!-- الأداة 3: صور إلى PDF -->
+        <!-- الأداة 3 -->
         <div class="tool">
             <h2>📸 صور إلى PDF</h2>
             <p>اجمع صورك في ملف PDF واحد مرتب</p>
             <input type="file" id="imagesToPdf" accept="image/*" multiple>
-            <button onclick="convertImagesToPDF()">حول الآن</button>
+            <button onclick="goShortlink('convertImagesToPDF')">حول الآن</button>
+            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
             <div id="status3" class="status"></div>
         </div>
 
-        <!-- الأداة 4: ضغط الصور - الجديدة 🔥 -->
+        <!-- الأداة 4 -->
         <div class="tool">
             <h2>⚡ ضغط الصور</h2>
             <p>قلل حجم الصورة 80% بدون ما تبوظ الجودة</p>
@@ -188,7 +146,8 @@ input[type="range"] {
                 <label>مستوى الضغط: <span class="quality-value" id="qualityValue">70%</span></label>
                 <input type="range" id="qualitySlider" min="10" max="95" value="70">
             </div>
-            <button onclick="compressImages()">اضغط الصور</button>
+            <button onclick="goShortlink('compressImages')">اضغط الصور</button>
+            <p class="earning-note">الإعلان 5 ثواني فقط - شكراً لدعمك</p>
             <div id="status4" class="status"></div>
         </div>
 
@@ -208,7 +167,21 @@ input[type="range"] {
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// سلايدر الضغط
+// حط التوكن بتاعك هنا من ShrinkMe
+const SHRINKME_TOKEN = 'YOUR_API_TOKEN_HERE';
+
+// دالة الروابط المختصرة
+function goShortlink(funcName) {
+    // افتح صفحة الإعلان في تاب جديد
+    const shortUrl = 'https://shrinkme.io/' + SHRINKME_TOKEN + '?url=' + encodeURIComponent(window.location.href + '#' + funcName);
+    window.open(shortUrl, '_blank');
+
+    // بعد 6 ثواني شغل الأداة في الصفحة الأصلية
+    setTimeout(() => {
+        window[funcName]();
+    }, 6000);
+}
+
 document.getElementById('qualitySlider').addEventListener('input', (e) => {
     document.getElementById('qualityValue').textContent = e.target.value + '%';
 });
@@ -221,38 +194,30 @@ function showStatus(id, message, type) {
     setTimeout(() => status.style.display = 'none', 5000);
 }
 
-// الأداة 1: PDF إلى Word
+// باقي دوال الأدوات زي ما هي بدون تغيير
 async function convertPDFtoWord() {
     const file = document.getElementById('pdfToWord').files[0];
     if (!file) return showStatus('status1', 'اختار ملف PDF الأول', 'error');
-
     showStatus('status1', 'جاري التحويل...', 'success');
-
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-
     let text = '';
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const content = await page.getTextContent();
         text += content.items.map(item => item.str).join(' ') + '\n\n';
     }
-
     const blob = new Blob([text], { type: 'application/msword' });
     downloadFile(blob, file.name.replace('.pdf', '.doc'));
     showStatus('status1', 'تم التحويل بنجاح ✓', 'success');
 }
 
-// الأداة 2: PDF إلى JPG
 async function convertPDFtoJPG() {
     const file = document.getElementById('pdfToJpg').files[0];
     if (!file) return showStatus('status2', 'اختار ملف PDF الأول', 'error');
-
     showStatus('status2', 'جاري التحويل...', 'success');
-
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
@@ -260,62 +225,44 @@ async function convertPDFtoJPG() {
         const context = canvas.getContext('2d');
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-
         await page.render({ canvasContext: context, viewport: viewport }).promise;
-
         canvas.toBlob((blob) => {
             downloadFile(blob, file.name.replace('.pdf', `_page${i}.jpg`));
         }, 'image/jpeg', 0.95);
     }
-
     showStatus('status2', 'تم التحويل بنجاح ✓', 'success');
 }
 
-// الأداة 3: صور إلى PDF
 async function convertImagesToPDF() {
     const files = document.getElementById('imagesToPdf').files;
     if (files.length === 0) return showStatus('status3', 'اختار صور الأول', 'error');
-
     showStatus('status3', 'جاري التحويل...', 'success');
-
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
-
     for (let i = 0; i < files.length; i++) {
         const imgData = await readFile(files[i]);
         if (i > 0) pdf.addPage();
         pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0);
     }
-
     pdf.save('images.pdf');
     showStatus('status3', 'تم التحويل بنجاح ✓', 'success');
 }
 
-// الأداة 4: ضغط الصور - الجديدة 🔥
 async function compressImages() {
     const files = document.getElementById('compressImage').files;
     const quality = document.getElementById('qualitySlider').value / 100;
-
     if (files.length === 0) return showStatus('status4', 'اختار صور الأول', 'error');
-
     showStatus('status4', 'جاري الضغط...', 'success');
-
     for (let i = 0; i < files.length; i++) {
         const img = await loadImage(files[i]);
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-
         canvas.toBlob((blob) => {
-            const originalSize = (files[i].size / 1024).toFixed(2);
-            const newSize = (blob.size / 1024).toFixed(2);
             const saved = ((1 - blob.size / files[i].size) * 100).toFixed(0);
-
             downloadFile(blob, files[i].name.replace(/\.[^/.]+$/, "") + `_compressed.jpg`);
-
             if (i === files.length - 1) {
                 showStatus('status4', `تم الضغط! وفرت ${saved}% من الحجم ✓`, 'success');
             }
