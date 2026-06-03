@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحويل الصور إلى PDF</title>
+    <title>تحويل الصور إلى PDF - مجاني</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -25,10 +25,18 @@
             text-align: center;
         }
         h1 { color: #667eea; margin-bottom: 10px; font-size: 28px; }
-        p { color: #666; margin-bottom: 30px; }
-        input[type="file"] {
-            display: none;
+        p { color: #666; margin-bottom: 20px; }
+       .limit-notice {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #155724;
+            font-weight: bold;
         }
+        input[type="file"] { display: none; }
        .upload-btn {
             background: #667eea;
             color: white;
@@ -41,39 +49,45 @@
             transition: 0.3s;
         }
        .upload-btn:hover { background: #5568d3; }
-        #convertBtn {
-            background: #28a745;
+        #convertBtn, #proBtn {
             color: white;
             border: none;
             padding: 15px 40px;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             display: none;
             width: 100%;
             transition: 0.3s;
+            margin-top: 10px;
+            font-weight: bold;
         }
+        #convertBtn { background: #28a745; }
         #convertBtn:hover { background: #218838; }
-        #preview { margin-top: 20px; }
+        #proBtn { background: #ff6b00; }
+        #proBtn:hover { background: #e55f00; }
+        #preview { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; }
         #preview img {
-            max-width: 100px;
+            max-width: 80px;
             margin: 5px;
             border-radius: 8px;
             border: 2px solid #ddd;
         }
-
-        /* صندوق الدعم - الزرار الأصفر */
+       .error-msg {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 8px;
+        }
        .donate-box {
             margin-top: 30px;
             padding: 20px;
             background: #fff8e1;
             border-radius: 12px;
             border: 2px dashed #ffc107;
-        }
-       .donate-box p {
-            margin-bottom: 12px;
-            color: #333;
-            font-size: 15px;
         }
        .donate-btn {
             display: inline-block;
@@ -84,13 +98,6 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(255, 221, 0, 0.4);
-        }
-       .donate-btn:hover {
-            background: #ffcc00;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 221, 0, 0.6);
         }
     </style>
 </head>
@@ -99,16 +106,24 @@
         <h1>تحويل الصور إلى PDF 📄</h1>
         <p>ارفع صورك وحولها ملف PDF واحد بسهولة</p>
 
+        <div class="limit-notice">
+            ✅ النسخة المجانية: 5 صور كحد أقصى - بدون علامة مائية
+        </div>
+
         <label for="fileInput" class="upload-btn">اختر الصور</label>
         <input type="file" id="fileInput" multiple accept="image/*">
 
         <div id="preview"></div>
+        <div class="error-msg" id="errorMsg">
+            ⚠️ عندك أكتر من 5 صور<br>
+            للتحويل بدون حدود: ابعت 100ج فودافون كاش + الصور على واتساب
+        </div>
 
-        <button id="convertBtn">تحويل ل PDF</button>
+        <button id="convertBtn">تحويل 5 صور مجاناً</button>
+        <button id="proBtn">تحويل بدون حدود - 100ج 💎</button>
 
-        <!-- صندوق الدعم -->
         <div class="donate-box">
-            <p>💛 لو الأداة عجبتك وفرت عليك وقت</p>
+            <p>💛 لو الأداة عجبتك</p>
             <a href="https://buymeacoffee.com/adeltlge" target="_blank" rel="noopener" class="donate-btn">
                 ادعمني بكوباية قهوة ☕
             </a>
@@ -119,26 +134,54 @@
     <script>
         const fileInput = document.getElementById('fileInput');
         const convertBtn = document.getElementById('convertBtn');
+        const proBtn = document.getElementById('proBtn');
         const preview = document.getElementById('preview');
+        const errorMsg = document.getElementById('errorMsg');
         let images = [];
+
+        // رقمك اتظبط خلاص
+        const VODAFONE_NUMBER = '01062183539';
+        const WHATSAPP_NUMBER = '201062183539';
 
         fileInput.addEventListener('change', (e) => {
             images = Array.from(e.target.files);
             preview.innerHTML = '';
+            errorMsg.style.display = 'none';
+
             images.forEach(file => {
                 const img = document.createElement('img');
                 img.src = URL.createObjectURL(file);
                 preview.appendChild(img);
             });
-            if(images.length > 0) convertBtn.style.display = 'block';
+
+            if(images.length > 0) {
+                if(images.length <= 5) {
+                    convertBtn.style.display = 'block';
+                    proBtn.style.display = 'none';
+                } else {
+                    convertBtn.style.display = 'none';
+                    proBtn.style.display = 'block';
+                    errorMsg.style.display = 'block';
+                }
+            }
         });
 
         convertBtn.addEventListener('click', async () => {
+            await createPDF(images.slice(0, 5), 'images-free.pdf');
+        });
+
+        proBtn.addEventListener('click', () => {
+            const message = `السلام عليكم يا عادل 👋\nعايز النسخة Pro لتحويل الصور PDF\nعدد الصور: ${images.length}\nهحول 100ج فودافون كاش على رقم ${VODAFONE_NUMBER} وهبعتلك سكرين + الصور`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        });
+
+        async function createPDF(imgArray, filename) {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
 
-            for(let i = 0; i < images.length; i++) {
-                const img = await loadImage(images[i]);
+            for(let i = 0; i < imgArray.length; i++) {
+                const img = await loadImage(imgArray[i]);
                 const width = pdf.internal.pageSize.getWidth();
                 const height = (img.height * width) / img.width;
 
@@ -146,8 +189,8 @@
                 pdf.addImage(img, 'JPEG', 0, 0, width, height);
             }
 
-            pdf.save('images-to-pdf.pdf');
-        });
+            pdf.save(filename);
+        }
 
         function loadImage(file) {
             return new Promise((resolve) => {
