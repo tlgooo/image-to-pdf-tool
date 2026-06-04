@@ -10,12 +10,10 @@
 body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px;min-height:100vh}
 .box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:560px;margin:auto;box-shadow:0 15px 50px rgba(0,0,0,0.15)}
 h1{color:#B8860B;text-align:center;margin-bottom:25px}
-.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:linear-gradient(145deg,#FA,#F0F0F0);transition:0.3s}
-.tool:hover{border-color:#FFD700;box-shadow:0 6px 25px rgba(255,215,0,0.3);transform:translateY(-2px)}
+.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:linear-gradient(145deg,#FA,#F0F0F0)}
 .tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px;margin-bottom:12px}
 input{width:100%;padding:13px;border:2px solid #C0C0C0;border-radius:12px;margin:12px 0}
 button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:15px;border:none;border-radius:12px;width:100%;font-size:17px;font-weight:bold;cursor:pointer}
-button:hover{background:linear-gradient(135deg,#FFDF00,#B8860B);transform:scale(1.02)}
 .instruction{background:linear-gradient(135deg,#FFF8DC,#FFEFD5);border:2px solid #FFD700;border-radius:12px;padding:15px;margin:20px 0;text-align:center;color:#8B6914;font-weight:bold}
 #loading{display:none;text-align:center;color:#B8860B;font-size:18px;font-weight:bold}
 #result{display:none;text-align:center;margin-top:20px}
@@ -26,36 +24,34 @@ small{color:#666;font-size:12px}
 <body>
 <div class="box">
 <h1>✨ 4 أدوات PDF احترافية ✨</h1>
-<div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان قبل كل تحويل</div>
+<div class="instruction">⏱️ هيفتحلك إعلان في تاب جديد - استنى 5 ثواني وارجع</div>
 
 <div class="tool">
 <h3>1. صورة → PDF 📄</h3>
 <input type="file" id="imgToPdf" accept="image/*">
-<button onclick="goToAd('img')">تحويل الآن</button>
+<button onclick="startProcess('img')">تحويل الآن</button>
 </div>
 
 <div class="tool">
 <h3>2. PDF → صورة 🖼️</h3>
 <input type="file" id="pdfToImg" accept=".pdf">
-<button onclick="goToAd('pdf2img')">تحويل الآن</button>
-<small>أول صفحة بس - JPG</small>
+<button onclick="startProcess('pdf2img')">تحويل الآن</button>
 </div>
 
 <div class="tool">
 <h3>3. ضغط PDF 🗜️</h3>
 <input type="file" id="compressPdf" accept=".pdf">
-<button onclick="goToAd('compress')">ضغط الآن</button>
-<small>يقلل الحجم 30-50%</small>
+<button onclick="startProcess('compress')">ضغط الآن</button>
 </div>
 
 <div class="tool">
 <h3>4. دمج PDF 📎</h3>
 <input type="file" id="mergePdf" accept=".pdf" multiple>
-<button onclick="goToAd('merge')">دمج الآن</button>
-<small>Ctrl + اختار ملفات كتير</small>
+<button onclick="startProcess('merge')">دمج الآن</button>
 </div>
 
-<div id="loading">⏳ جاري التحويل بعد الإعلان...</div>
+<div id="loading">⏳ استنى 5 ثواني الإعلان... وبعدين دوس "كمل التحويل"</div>
+<button id="continueBtn" onclick="doProcess()" style="display:none;background:linear-gradient(135deg,#00C853,#00B248)">✅ كمل التحويل</button>
 <div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم بنجاح!</p><a id="download" download="file.pdf">📥 تحميل الملف</a></div>
 </div>
 
@@ -63,7 +59,7 @@ small{color:#666;font-size:12px}
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const LINK = 'https://shrinkme.io/1PxO?r=';
 
-function goToAd(tool) {
+function startProcess(tool) {
 let file, files, reader;
 
 if(tool === 'img') {
@@ -71,10 +67,10 @@ file = document.getElementById('imgToPdf').files[0];
 if(!file) return alert('⚠️ اختار صورة');
 reader = new FileReader();
 reader.onload = e => {
-localStorage.tool = 'img';
-localStorage.data = e.target.result;
-localStorage.name = file.name;
-location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+sessionStorage.tool = 'img';
+sessionStorage.data = e.target.result;
+sessionStorage.name = file.name;
+openAd();
 }
 reader.readAsDataURL(file);
 }
@@ -84,10 +80,10 @@ file = document.getElementById('pdfToImg').files[0];
 if(!file) return alert('⚠️ اختار PDF');
 reader = new FileReader();
 reader.onload = e => {
-localStorage.tool = 'pdf2img';
-localStorage.data = e.target.result;
-localStorage.name = file.name;
-location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+sessionStorage.tool = 'pdf2img';
+sessionStorage.data = e.target.result;
+sessionStorage.name = file.name;
+openAd();
 }
 reader.readAsDataURL(file);
 }
@@ -97,10 +93,10 @@ file = document.getElementById('compressPdf').files[0];
 if(!file) return alert('⚠️ اختار PDF');
 reader = new FileReader();
 reader.onload = e => {
-localStorage.tool = 'compress';
-localStorage.data = e.target.result;
-localStorage.name = file.name;
-location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+sessionStorage.tool = 'compress';
+sessionStorage.data = btoa(String.fromCharCode(...new Uint8Array(e.target.result)));
+sessionStorage.name = file.name;
+openAd();
 }
 reader.readAsArrayBuffer(file);
 }
@@ -116,21 +112,28 @@ reader.onload = e => {
 pdfsData.push(e.target.result);
 loaded++;
 if(loaded === files.length) {
-localStorage.tool = 'merge';
-localStorage.data = JSON.stringify(pdfsData);
-localStorage.name = 'merged.pdf';
-location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+sessionStorage.tool = 'merge';
+sessionStorage.data = JSON.stringify(pdfsData);
+sessionStorage.name = 'merged.pdf';
+openAd();
 }
 reader.readAsDataURL(files[i]);
 }
 document.getElementById('loading').style.display = 'block';
 }
 
-window.onload = async () => {
-if(location.hash === '#done') {
-const tool = localStorage.tool;
+function openAd() {
+window.open(LINK + encodeURIComponent(location.href), '_blank');
+document.getElementById('loading').style.display = 'block';
+document.getElementById('continueBtn').style.display = 'block';
+alert('✅ فتحنا الإعلان في تاب جديد\nاستنى 5 ثواني وارجع دوس "كمل التحويل"');
+}
+
+async function doProcess() {
+const tool = sessionStorage.tool;
 const { jsPDF } = window.jspdf;
 const { PDFDocument } = PDFLib;
+document.getElementById('continueBtn').style.display = 'none';
 
 try {
 if(tool === 'img') {
@@ -139,14 +142,14 @@ img.onload = () => {
 const p = new jsPDF();
 const w = p.internal.pageSize.getWidth();
 const h = p.internal.pageSize.getHeight();
-p.addImage(localStorage.data, 'JPEG', 0, 0, w, h);
-showResult(p.output('bloburl'), localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
+p.addImage(sessionStorage.data, 'JPEG', 0, 0, w, h);
+showResult(p.output('bloburl'), sessionStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
 }
-img.src = localStorage.data;
+img.src = sessionStorage.data;
 }
 
 if(tool === 'pdf2img') {
-const pdfData = new Uint8Array(atob(localStorage.data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
+const pdfData = new Uint8Array(atob(sessionStorage.data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
 const pdf = await pdfjsLib.getDocument(pdfData).promise;
 const page = await pdf.getPage(1);
 const viewport = page.getViewport({scale: 2});
@@ -155,20 +158,20 @@ canvas.width = viewport.width;
 canvas.height = viewport.height;
 await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
 canvas.toBlob(blob => {
-showResult(URL.createObjectURL(blob), localStorage.name.replace(/\.[^/.]+$/, "") + '.jpg');
+showResult(URL.createObjectURL(blob), sessionStorage.name.replace(/\.[^/.]+$/, "") + '.jpg');
 }, 'image/jpeg', 0.9);
 }
 
 if(tool === 'compress') {
-const pdfBytes = new Uint8Array(atob(localStorage.data.split(',')[1] || localStorage.data).split('').map(c=>c.charCodeAt(0)));
+const pdfBytes = new Uint8Array(atob(sessionStorage.data).split('').map(c=>c.charCodeAt(0)));
 const pdfDoc = await PDFDocument.load(pdfBytes);
 const pdfBytesCompressed = await pdfDoc.save({useObjectStreams: false});
 const blob = new Blob([pdfBytesCompressed], {type: 'application/pdf'});
-showResult(URL.createObjectURL(blob), 'compressed_' + localStorage.name);
+showResult(URL.createObjectURL(blob), 'compressed_' + sessionStorage.name);
 }
 
 if(tool === 'merge') {
-const pdfsData = JSON.parse(localStorage.data);
+const pdfsData = JSON.parse(sessionStorage.data);
 const mergedPdf = await PDFDocument.create();
 for(let data of pdfsData) {
 const pdfBytes = new Uint8Array(atob(data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
@@ -178,14 +181,13 @@ copiedPages.forEach(page => mergedPdf.addPage(page));
 }
 const pdfBytes = await mergedPdf.save();
 const blob = new Blob([pdfBytes], {type: 'application/pdf'});
-showResult(URL.createObjectURL(blob), localStorage.name);
+showResult(URL.createObjectURL(blob), sessionStorage.name);
 }
 } catch(e) {
 alert('حصل خطأ: ' + e.message);
 document.getElementById('loading').style.display = 'none';
 }
-localStorage.clear();
-}
+sessionStorage.clear();
 }
 
 function showResult(url, name) {
