@@ -2,159 +2,121 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>4 أدوات PDF احترافية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4 أدوات PDF احترافية - مجاناً</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
-body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px;min-height:100vh}
-.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:560px;margin:auto;box-shadow:0 15px 50px rgba(0,0,0,0.15)}
-h1{color:#B8860B;text-align:center;margin-bottom:25px}
-.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:linear-gradient(145deg,#FA,#F0F0F0)}
-.tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px;margin-bottom:12px}
-input{width:100%;padding:13px;border:2px solid #C0C0C0;border-radius:12px;margin:12px 0}
-button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:15px;border:none;border-radius:12px;width:100%;font-size:17px;font-weight:bold;cursor:pointer;margin:5px 0}
-#adSection{display:none;background:#FFF8DC;border:3px solid #FFD700;border-radius:15px;padding:20px;margin:20px 0;text-align:center}
-#adSection a{display:block;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;padding:20px;border-radius:12px;text-decoration:none;font-size:20px;font-weight:bold;margin:15px 0}
-#result{display:none;text-align:center;margin-top:20px}
-#download{background:linear-gradient(135deg,#C0C0C0,#A9A9A9);color:#1a1a1a;padding:14px 30px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;margin-top:12px}
-small{color:#666;font-size:12px}
+* {margin: 0; padding: 0; box-sizing: border-box}
+body {font-family: 'Tahoma', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px}
+.box {background: white; border-radius: 25px; padding: 40px; max-width: 600px; margin: 50px auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3)}
+h1 {color: #667eea; text-align: center; margin-bottom: 10px; font-size: 28px}
+.subtitle {text-align: center; color: #666; margin-bottom: 30px}
+.tool {border: 2px solid #eee; border-radius: 15px; padding: 25px; margin: 20px 0; transition: 0.3s}
+.tool:hover {border-color: #667eea; transform: translateY(-5px)}
+.tool h3 {color: #764ba2; margin-bottom: 10px}
+input[type="file"] {width: 100%; padding: 12px; border: 2px dashed #667eea; border-radius: 10px; margin: 15px 0; cursor: pointer}
+button {width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s}
+button:hover {transform: scale(1.05); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4)}
+#loading {display: none; text-align: center; color: #667eea; font-weight: bold; margin-top: 15px; font-size: 18px}
+#result {display: none; text-align: center; margin-top: 20px}
+#download {background: linear-gradient(135deg, #00C853, #00B248); color: white; padding: 15px 40px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; display: inline-block}
 </style>
 </head>
 <body>
 <div class="box">
-<h1>✨ 4 أدوات PDF احترافية ✨</h1>
+<h1>✨ أدوات PDF الاحترافية</h1>
+<p class="subtitle">4 أدوات مجانية 100% - شغالة من المتصفح</p>
 
 <div id="toolsSection">
 <div class="tool">
 <h3>1. صورة → PDF 📄</h3>
+<p>حول أي صورة JPG/PNG لملف PDF</p>
 <input type="file" id="imgToPdf" accept="image/*">
-<button onclick="saveFile('img')">اختر صورة وتابع</button>
+<button onclick="convertImgToPdf()">تحويل وتحميل PDF</button>
 </div>
 
 <div class="tool">
 <h3>2. PDF → صورة 🖼️</h3>
+<p>استخرج أول صفحة من PDF كصورة JPG</p>
 <input type="file" id="pdfToImg" accept=".pdf">
-<button onclick="saveFile('pdf2img')">اختر PDF وتابع</button>
+<button onclick="convertPdfToImg()">تحويل وتحميل صورة</button>
 </div>
 
 <div class="tool">
 <h3>3. ضغط PDF 🗜️</h3>
+<p>قلل حجم ملف PDF بدون ما يبوظ</p>
 <input type="file" id="compressPdf" accept=".pdf">
-<button onclick="saveFile('compress')">اختر PDF وتابع</button>
+<button onclick="compressPdf()">ضغط وتحميل</button>
 </div>
 
 <div class="tool">
 <h3>4. دمج PDF 📎</h3>
+<p>ادمج أكتر من PDF في ملف واحد</p>
 <input type="file" id="mergePdf" accept=".pdf" multiple>
-<button onclick="saveFile('merge')">اختر ملفات وتابع</button>
+<button onclick="mergePdf()">دمج وتحميل</button>
 </div>
 </div>
 
-<div id="adSection">
-<h3 style="color:#B8860B">⚠️ خطوة إجبارية</h3>
-<p style="font-size:16px;color:#333">لازم تدوس على الإعلان ده الأول عشان نكمل التحويل</p>
-<a href="https://shrinkme.io/1PxO?r=https://tlgooo.github.io/image-to-pdf-tool/" target="_blank">🎯 دوس هنا لفتح الإعلان</a>
-<p style="color:#8B6914;font-size:14px">بعد ما تفتح الإعلان ارجع هنا ودوس "كمل التحويل"</p>
-<button onclick="doProcess()" style="background:linear-gradient(135deg,#00C853,#00B248)">✅ كمل التحويل</button>
-</div>
-
+<div id="loading">⏳ جاري فتح الإعلان... استنى 3 ثواني</div>
 <div id="result">
-<p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم بنجاح!</p>
+<p style="color:#00C853;font-size:24px;font-weight:bold;margin-bottom:15px">✅ تم بنجاح!</p>
 <a id="download" download="file.pdf">📥 تحميل الملف</a>
 </div>
 </div>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-function saveFile(tool) {
-let file, files, reader;
-
-if(tool === 'img') {
-file = document.getElementById('imgToPdf').files[0];
-if(!file) return alert('⚠️ اختار صورة');
-reader = new FileReader();
-reader.onload = e => {
-localStorage.tool = 'img';
-localStorage.data = e.target.result;
-localStorage.name = file.name;
-showAd();
-}
-reader.readAsDataURL(file);
-}
-
-if(tool === 'pdf2img') {
-file = document.getElementById('pdfToImg').files[0];
-if(!file) return alert('⚠️ اختار PDF');
-reader = new FileReader();
-reader.onload = e => {
-localStorage.tool = 'pdf2img';
-localStorage.data = e.target.result;
-localStorage.name = file.name;
-showAd();
-}
-reader.readAsDataURL(file);
-}
-
-if(tool === 'compress') {
-file = document.getElementById('compressPdf').files[0];
-if(!file) return alert('⚠️ اختار PDF');
-reader = new FileReader();
-reader.onload = e => {
-localStorage.tool = 'compress';
-localStorage.data = btoa(String.fromCharCode(...new Uint8Array(e.target.result)));
-localStorage.name = file.name;
-showAd();
-}
-reader.readAsArrayBuffer(file);
-}
-
-if(tool === 'merge') {
-files = document.getElementById('mergePdf').files;
-if(files.length < 2) return alert('⚠️ اختار ملفين PDF على الأقل');
-let loaded = 0;
-let pdfsData = [];
-for(let i=0; i<files.length; i++) {
-reader = new FileReader();
-reader.onload = e => {
-pdfsData.push(e.target.result);
-loaded++;
-if(loaded === files.length) {
-localStorage.tool = 'merge';
-localStorage.data = JSON.stringify(pdfsData);
-localStorage.name = 'merged.pdf';
-showAd();
-}
-reader.readAsDataURL(files[i]);
-}
-}
-
-function showAd() {
-document.getElementById('toolsSection').style.display = 'none';
-document.getElementById('adSection').style.display = 'block';
-}
-
-async function doProcess() {
-const tool = localStorage.tool;
 const { jsPDF } = window.jspdf;
-const { PDFDocument } = PDFLib;
 
-try {
-if(tool === 'img') {
+// رابط الإعلان بتاعك - ouo.io
+const AD_LINK = 'https://ouo.io/zGgJKG';
+
+function showLoading(show) {
+document.getElementById('loading').style.display = show? 'block' : 'none';
+document.getElementById('toolsSection').style.display = show? 'none' : 'block';
+}
+
+function showResult(url, name) {
+document.getElementById('loading').style.display = 'none';
+document.getElementById('result').style.display = 'block';
+document.getElementById('download').href = url;
+document.getElementById('download').download = name;
+}
+
+async function openAdAndWait() {
+window.open(AD_LINK, '_blank');
+showLoading(true);
+await new Promise(r => setTimeout(r, 3000));
+showLoading(false);
+}
+
+// 1. صورة إلى PDF
+async function convertImgToPdf() {
+const file = document.getElementById('imgToPdf').files[0];
+if (!file) return alert('⚠️ اختار صورة الأول');
+await openAdAndWait();
+
 const img = new Image();
 img.onload = () => {
-const p = new jsPDF();
-const w = p.internal.pageSize.getWidth();
-const h = p.internal.pageSize.getHeight();
-p.addImage(localStorage.data, 'JPEG', 0, 0, w, h);
-showResult(p.output('bloburl'), localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
-}
-img.src = localStorage.data;
+const pdf = new jsPDF({orientation: img.width > img.height? 'landscape' : 'portrait'});
+const w = pdf.internal.pageSize.getWidth();
+const h = pdf.internal.pageSize.getHeight();
+pdf.addImage(img, 'JPEG', 0, 0, w, h);
+const blob = pdf.output('blob');
+showResult(URL.createObjectURL(blob), file.name.replace(/\.[^/.]+$/, "") + '.pdf');
+};
+img.src = URL.createObjectURL(file);
 }
 
-if(tool === 'pdf2img') {
-const pdfData = new Uint8Array(atob(localStorage.data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
+// 2. PDF إلى صورة
+async function convertPdfToImg() {
+const file = document.getElementById('pdfToImg').files[0];
+if (!file) return alert('⚠️ اختار PDF الأول');
+await openAdAndWait();
+
+const pdfData = await file.arrayBuffer();
 const pdf = await pdfjsLib.getDocument(pdfData).promise;
 const page = await pdf.getPage(1);
 const viewport = page.getViewport({scale: 2});
@@ -163,42 +125,39 @@ canvas.width = viewport.width;
 canvas.height = viewport.height;
 await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
 canvas.toBlob(blob => {
-showResult(URL.createObjectURL(blob), localStorage.name.replace(/\.[^/.]+$/, "") + '.jpg');
-}, 'image/jpeg', 0.9);
+showResult(URL.createObjectURL(blob), file.name.replace(/\.[^/.]+$/, "") + '.jpg');
+}, 'image/jpeg', 0.95);
 }
 
-if(tool === 'compress') {
-const pdfBytes = new Uint8Array(atob(localStorage.data).split('').map(c=>c.charCodeAt(0)));
-const pdfDoc = await PDFDocument.load(pdfBytes);
-const pdfBytesCompressed = await pdfDoc.save({useObjectStreams: false});
-const blob = new Blob([pdfBytesCompressed], {type: 'application/pdf'});
-showResult(URL.createObjectURL(blob), 'compressed_' + localStorage.name);
+// 3. ضغط PDF
+async function compressPdf() {
+const file = document.getElementById('compressPdf').files[0];
+if (!file) return alert('⚠️ اختار PDF الأول');
+await openAdAndWait();
+
+const pdfData = await file.arrayBuffer();
+const pdf = await PDFLib.PDFDocument.load(pdfData);
+const pdfBytes = await pdf.save({useObjectStreams: false, addDefaultPage: false});
+const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+showResult(URL.createObjectURL(blob), 'compressed_' + file.name);
 }
 
-if(tool === 'merge') {
-const pdfsData = JSON.parse(localStorage.data);
-const mergedPdf = await PDFDocument.create();
-for(let data of pdfsData) {
-const pdfBytes = new Uint8Array(atob(data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
-const pdf = await PDFDocument.load(pdfBytes);
+// 4. دمج PDF
+async function mergePdf() {
+const files = document.getElementById('mergePdf').files;
+if (files.length < 2) return alert('⚠️ اختار ملفين PDF على الأقل');
+await openAdAndWait();
+
+const mergedPdf = await PDFLib.PDFDocument.create();
+for (let file of files) {
+const pdfData = await file.arrayBuffer();
+const pdf = await PDFLib.PDFDocument.load(pdfData);
 const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
 copiedPages.forEach(page => mergedPdf.addPage(page));
 }
 const pdfBytes = await mergedPdf.save();
 const blob = new Blob([pdfBytes], {type: 'application/pdf'});
-showResult(URL.createObjectURL(blob), localStorage.name);
-}
-} catch(e) {
-alert('حصل خطأ: ' + e.message);
-}
-localStorage.clear();
-}
-
-function showResult(url, name) {
-document.getElementById('adSection').style.display = 'none';
-document.getElementById('result').style.display = 'block';
-document.getElementById('download').href = url;
-document.getElementById('download').download = name;
+showResult(URL.createObjectURL(blob), 'merged.pdf');
 }
 </script>
 </body>
