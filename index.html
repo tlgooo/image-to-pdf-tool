@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحويل صورة إلى PDF - 5 ثواني</title>
+<title>تحويل صورة إلى PDF</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -25,9 +25,7 @@ button:hover{background:#283593}
 <body>
 <div class="box">
 <h1>تحويل صورة إلى PDF 📄</h1>
-
 <input type="file" id="file" accept="image/*">
-
 <div class="instruction">
 ⏱️ <b>ادعم الموقع بـ 5 ثواني فقط</b><br>
 1. دوس الزرار الأزرق تحت<br>
@@ -36,31 +34,20 @@ button:hover{background:#283593}
 4. هترجع هنا والملف جاهز للتحميل
 <div class="arrow">⬇️</div>
 </div>
-
 <button onclick="start()">تحويل الآن 🔄</button>
-
 <div id="loading">⏳ جاري التحويل بعد الإعلان...</div>
 <div id="error" class="error"></div>
-
 <div id="result">
 <p style="color:#4caf50;font-size:24px;margin-bottom:10px">✅ تم التحويل بنجاح!</p>
 <a id="download" download="converted.pdf">📥 اضغط هنا لتحميل PDF</a>
 </div>
 </div>
-
 <script>
-// اللينك بتاعك محطوط هنا خلاص متعدلش حاجة
 const LINK = 'https://shrinkme.io/1PxO?r=';
-
 function start() {
 const file = document.getElementById('file').files[0];
 document.getElementById('error').style.display = 'none';
-
-if(!file) {
-alert('⚠️ اختار صورة الأول من فوق');
-return;
-}
-
+if(!file) {alert('⚠️ اختار صورة الأول من فوق'); return;}
 const reader = new FileReader();
 reader.onload = function(e) {
 sessionStorage.setItem('imgData', e.target.result);
@@ -71,21 +58,17 @@ window.location.href = LINK + encodeURIComponent(returnUrl);
 reader.readAsDataURL(file);
 document.getElementById('loading').style.display = 'block';
 }
-
 window.onload = async function() {
 if(window.location.hash === '#done') {
 const imgData = sessionStorage.getItem('imgData');
 const fileName = sessionStorage.getItem('fileName');
-
 if(!imgData) {
 document.getElementById('error').innerHTML = '❌ الصورة ضاعت! جرب تاني ومتقفلش المتصفح وانت في الإعلان';
 document.getElementById('error').style.display = 'block';
 return;
 }
-
 sessionStorage.removeItem('imgData');
 sessionStorage.removeItem('fileName');
-
 const { jsPDF } = window.jspdf;
 const pdf = new jsPDF();
 const img = new Image();
@@ -94,7 +77,6 @@ const pageWidth = pdf.internal.pageSize.getWidth();
 const pageHeight = pdf.internal.pageSize.getHeight();
 const imgRatio = img.width / img.height;
 const pageRatio = pageWidth / pageHeight;
-
 let finalWidth, finalHeight;
 if(imgRatio > pageRatio) {
 finalWidth = pageWidth;
@@ -103,14 +85,11 @@ finalHeight = pageWidth / imgRatio;
 finalHeight = pageHeight;
 finalWidth = pageHeight * imgRatio;
 }
-
 const x = (pageWidth - finalWidth) / 2;
 const y = (pageHeight - finalHeight) / 2;
-
 pdf.addImage(imgData, 'JPEG', x, y, finalWidth, finalHeight);
 const pdfBlob = pdf.output('blob');
 const url = URL.createObjectURL(pdfBlob);
-
 document.getElementById('loading').style.display = 'none';
 document.getElementById('result').style.display = 'block';
 document.getElementById('download').href = url;
