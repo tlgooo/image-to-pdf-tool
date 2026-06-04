@@ -2,11 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>4 أدوات PDF دهبي</title>
+<title>أدوات PDF دهبي</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
 body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px}
-.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:520px;margin:auto;box-shadow:0 15px 50px rgba(0,0,0,0.15)}
+.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:520px;margin:auto}
 h1{color:#B8860B;text-align:center;margin-bottom:25px}
 .tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:#FA}
 .tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px}
@@ -21,56 +22,95 @@ button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:
 </head>
 <body>
 <div class="box">
-<h1>✨ 4 أدوات PDF احترافية ✨</h1>
-<div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان</div>
+<h1>✨ أدوات PDF احترافية ✨</h1>
+<div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان قبل كل تحويل</div>
 
 <div class="tool">
 <h3>1. صورة → PDF 📄</h3>
 <input type="file" id="imgToPdf" accept="image/*">
-<button onclick="convertImgToPdf()">تحويل الآن</button>
+<button onclick="goToAd('img')">تحويل الآن</button>
 </div>
 
-<div class="tool"><h3>2. PDF → صورة 🖼️</h3><div class="coming">قريباً</div></div>
-<div class="tool"><h3>3. ضغط PDF 🗜️</h3><div class="coming">قريباً</div></div>
+<div class="tool">
+<h3>2. ضغط PDF 🗜️</h3>
+<input type="file" id="compressPdf" accept=".pdf">
+<button onclick="goToAd('compress')">ضغط الآن</button>
+</div>
+
+<div class="tool"><h3>3. PDF → صورة 🖼️</h3><div class="coming">قريباً</div></div>
 <div class="tool"><h3>4. دمج PDF 📎</h3><div class="coming">قريباً</div></div>
 
 <div id="loading">⏳ جاري التحويل بعد الإعلان...</div>
-<div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم!</p><a id="download" download="file.pdf">📥 تحميل PDF</a></div>
+<div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم!</p><a id="download" download="file.pdf">📥 تحميل الملف</a></div>
 </div>
 
 <script>
-// اللينك الشغال بتاعك محطوط هنا خلاص
 const LINK = 'https://shrinkme.io/1PxO?r=';
 
-function convertImgToPdf() {
+function goToAd(tool) {
+if(tool === 'img') {
 const file = document.getElementById('imgToPdf').files[0];
-if(!file) return alert('اختار صورة الأول');
+if(!file) return alert('اختار صورة');
 const reader = new FileReader();
 reader.onload = e => {
-localStorage.img = e.target.result;
+localStorage.tool = 'img';
+localStorage.data = e.target.result;
 localStorage.name = file.name;
 location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
 }
 reader.readAsDataURL(file);
+}
+if(tool === 'compress') {
+const file = document.getElementById('compressPdf').files[0];
+if(!file) return alert('اختار PDF');
+const reader = new FileReader();
+reader.onload = e => {
+localStorage.tool = 'compress';
+localStorage.data = e.target.result;
+localStorage.name = file.name;
+location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+}
+reader.readAsArrayBuffer(file);
+}
 document.getElementById('loading').style.display = 'block';
 }
 
+window.onload = async () => {
 if(location.hash === '#done') {
+const tool = localStorage.tool;
 const { jsPDF } = window.jspdf;
+const { PDFDocument } = PDFLib;
+
+if(tool === 'img') {
 const img = new Image();
 img.onload = () => {
 const p = new jsPDF();
 const w = p.internal.pageSize.getWidth();
 const h = p.internal.pageSize.getHeight();
-p.addImage(localStorage.img, 'JPEG', 0, 0, w, h);
+p.addImage(localStorage.data, 'JPEG', 0, 0, w, h);
 const url = p.output('bloburl');
+showResult(url, localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
+}
+img.src = localStorage.data;
+}
+
+if(tool === 'compress') {
+const pdfBytes = new Uint8Array(atob(localStorage.data.split(',')[1] || localStorage.data).split('').map(c=>c.charCodeAt(0)));
+const pdfDoc = await PDFDocument.load(pdfBytes);
+const pdfBytesCompressed = await pdfDoc.save({useObjectStreams: false});
+const blob = new Blob([pdfBytesCompressed], {type: 'application/pdf'});
+const url = URL.createObjectURL(blob);
+showResult(url, 'compressed_' + localStorage.name);
+}
+localStorage.clear();
+}
+}
+
+function showResult(url, name) {
 document.getElementById('loading').style.display = 'none';
 document.getElementById('result').style.display = 'block';
 document.getElementById('download').href = url;
-document.getElementById('download').download = localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf';
-localStorage.clear();
-}
-img.src = localStorage.img;
+document.getElementById('download').download = name;
 }
 </script>
 </body>
