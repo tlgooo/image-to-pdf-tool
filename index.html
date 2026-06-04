@@ -2,224 +2,75 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4 أدوات PDF احترافية</title>
+<title>4 أدوات PDF دهبي</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:'Tajawal',tahoma;
-background:linear-gradient(135deg,#C0C0C0 0%,#E8E8E8 100%);
-min-height:100vh;
-padding:30px 20px
-}
-.box{
-background:linear-gradient(145deg,#ffffff,#f5f5f5);
-padding:35px;
-border-radius:25px;
-max-width:520px;
-margin:auto;
-box-shadow:0 15px 50px rgba(0,0,0,0.15);
-border:3px solid #FFD700
-}
-h1{
-color:#B8860B;
-text-align:center;
-margin-bottom:25px;
-font-size:28px;
-text-shadow:1px 1px 2px rgba(0,0,0,0.1)
-}
-.tool{
-border:2px solid #D4AF37;
-border-radius:18px;
-padding:22px;
-margin:18px 0;
-background:linear-gradient(145deg,#FA,#F0F0F0);
-transition:0.3s;
-box-shadow:0 4px 15px rgba(212,175,55,0.2)
-}
-.tool:hover{
-border-color:#FFD700;
-box-shadow:0 6px 25px rgba(255,215,0,0.4);
-transform:translateY(-2px)
-}
-.tool h3{
-color:#B8860B;
-margin-bottom:12px;
-font-size:18px;
-border-bottom:2px solid #FFD700;
-padding-bottom:8px
-}
-input{
-width:100%;
-padding:13px;
-margin:12px 0;
-border:2px solid #C0C0C0;
-border-radius:12px;
-background:#fff;
-cursor:pointer;
-font-size:14px
-}
-input:focus{
-border-color:#FFD700;
-outline:none;
-box-shadow:0 0 10px rgba(255,215,0,0.3)
-}
-button{
-background:linear-gradient(135deg,#FFD700 0%,#DAA520 100%);
-color:#1a1a1a;
-padding:15px;
-border:none;
-border-radius:12px;
-width:100%;
-font-size:17px;
-cursor:pointer;
-font-weight:bold;
-margin-top:10px;
-box-shadow:0 4px 15px rgba(218,165,32,0.4);
-transition:0.2s
-}
-button:hover{
-background:linear-gradient(135deg,#FFDF00 0%,#B8860B 100%);
-transform:scale(1.02);
-box-shadow:0 6px 20px rgba(184,134,11,0.5)
-}
-.instruction{
-background:linear-gradient(135deg,#FFF8DC 0%,#FFEFD5 100%);
-border:2px solid #FFD700;
-border-radius:12px;
-padding:15px;
-margin:20px 0;
-font-size:14px;
-color:#8B6914;
-text-align:center;
-font-weight:bold
-}
-#loading{display:none;text-align:center;margin-top:15px;color:#B8860B;font-weight:bold;font-size:18px}
-#result{display:none;text-align:center;margin-top:20px}
-#download{
-display:inline-block;
-background:linear-gradient(135deg,#C0C0C0 0%,#A9A9A9 100%);
-color:#1a1a1a;
-padding:14px 30px;
-border-radius:12px;
-text-decoration:none;
-font-weight:bold;
-margin-top:12px;
-font-size:18px;
-box-shadow:0 4px 15px rgba(169,169,169,0.4)
-}
-#download:hover{
-background:linear-gradient(135deg,#D3D3D3 0%,#808080 100%);
-transform:scale(1.05)
-}
-.coming{
-background:#f5f5f5;
-color:#999;
-padding:12px;
-border-radius:8px;
-text-align:center;
-font-weight:bold;
-border:2px dashed #C0C0C0
-}
+body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px}
+.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:520px;margin:auto;box-shadow:0 15px 50px rgba(0,0,0,0.15)}
+h1{color:#B8860B;text-align:center;margin-bottom:25px}
+.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:#FA}
+.tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px}
+input{width:100%;padding:13px;border:2px solid #C0C0C0;border-radius:12px;margin:12px 0}
+button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:15px;border:none;border-radius:12px;width:100%;font-size:17px;font-weight:bold;cursor:pointer}
+.instruction{background:#FFF8DC;border:2px solid #FFD700;border-radius:12px;padding:15px;margin:20px 0;text-align:center;color:#8B6914;font-weight:bold}
+#loading{display:none;text-align:center;color:#B8860B;font-size:18px;font-weight:bold}
+#result{display:none;text-align:center}
+#download{background:linear-gradient(135deg,#C0C0C0,#A9A9A9);color:#1a1a1a;padding:14px 30px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;margin-top:12px}
+.coming{background:#f5f5f5;color:#999;padding:12px;border-radius:8px;text-align:center;border:2px dashed #C0C0C0;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="box">
 <h1>✨ 4 أدوات PDF احترافية ✨</h1>
+<div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان</div>
 
-<div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان قبل كل تحويل</div>
-
-<!-- أداة 1 شغالة -->
 <div class="tool">
 <h3>1. صورة → PDF 📄</h3>
 <input type="file" id="imgToPdf" accept="image/*">
 <button onclick="convertImgToPdf()">تحويل الآن</button>
 </div>
 
-<!-- أداة 2 -->
-<div class="tool">
-<h3>2. PDF → صورة 🖼️</h3>
-<input type="file" id="pdfToImg" accept=".pdf">
-<div class="coming">قريباً - جاري التطوير</div>
-</div>
-
-<!-- أداة 3 -->
-<div class="tool">
-<h3>3. ضغط PDF 🗜️</h3>
-<input type="file" id="compressPdf" accept=".pdf">
-<div class="coming">قريباً - جاري التطوير</div>
-</div>
-
-<!-- أداة 4 -->
-<div class="tool">
-<h3>4. دمج PDF 📎</h3>
-<input type="file" id="mergePdf" accept=".pdf" multiple>
-<div class="coming">قريباً - جاري التطوير</div>
-</div>
+<div class="tool"><h3>2. PDF → صورة 🖼️</h3><div class="coming">قريباً</div></div>
+<div class="tool"><h3>3. ضغط PDF 🗜️</h3><div class="coming">قريباً</div></div>
+<div class="tool"><h3>4. دمج PDF 📎</h3><div class="coming">قريباً</div></div>
 
 <div id="loading">⏳ جاري التحويل بعد الإعلان...</div>
-<div id="result">
-<p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم التحويل بنجاح!</p>
-<a id="download" download="converted.pdf">📥 تحميل PDF</a>
-</div>
+<div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم!</p><a id="download" download="file.pdf">📥 تحميل PDF</a></div>
 </div>
 
 <script>
-// اللينك بتاعك محطوط هنا خلاص
+// اللينك الشغال بتاعك محطوط هنا خلاص
 const LINK = 'https://shrinkme.io/1PxO?r=';
 
 function convertImgToPdf() {
 const file = document.getElementById('imgToPdf').files[0];
-if(!file) {alert('⚠️ اختار صورة الأول'); return;}
-
+if(!file) return alert('اختار صورة الأول');
 const reader = new FileReader();
-reader.onload = function(e) {
-sessionStorage.setItem('imgData', e.target.result);
-sessionStorage.setItem('fileName', file.name);
-sessionStorage.setItem('tool', 'imgToPdf');
-const returnUrl = window.location.href.split('#')[0] + '#done';
-window.location.href = LINK + encodeURIComponent(returnUrl);
+reader.onload = e => {
+localStorage.img = e.target.result;
+localStorage.name = file.name;
+location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
 }
 reader.readAsDataURL(file);
 document.getElementById('loading').style.display = 'block';
 }
 
-window.onload = async function() {
-if(window.location.hash === '#done') {
-const tool = sessionStorage.getItem('tool');
-if(tool === 'imgToPdf') {
-const imgData = sessionStorage.getItem('imgData');
-const fileName = sessionStorage.getItem('fileName');
-sessionStorage.clear();
-
+if(location.hash === '#done') {
 const { jsPDF } = window.jspdf;
-const pdf = new jsPDF();
 const img = new Image();
-img.onload = function() {
-const pageWidth = pdf.internal.pageSize.getWidth();
-const pageHeight = pdf.internal.pageSize.getHeight();
-const imgRatio = img.width / img.height;
-const pageRatio = pageWidth / pageHeight;
-let finalWidth, finalHeight;
-if(imgRatio > pageRatio) {
-finalWidth = pageWidth;
-finalHeight = pageWidth / imgRatio;
-} else {
-finalHeight = pageHeight;
-finalWidth = pageHeight * imgRatio;
-}
-const x = (pageWidth - finalWidth) / 2;
-const y = (pageHeight - finalHeight) / 2;
-pdf.addImage(imgData, 'JPEG', x, y, finalWidth, finalHeight);
-const pdfBlob = pdf.output('blob');
-const url = URL.createObjectURL(pdfBlob);
+img.onload = () => {
+const p = new jsPDF();
+const w = p.internal.pageSize.getWidth();
+const h = p.internal.pageSize.getHeight();
+p.addImage(localStorage.img, 'JPEG', 0, 0, w, h);
+const url = p.output('bloburl');
 document.getElementById('loading').style.display = 'none';
 document.getElementById('result').style.display = 'block';
 document.getElementById('download').href = url;
-document.getElementById('download').download = fileName.replace(/\.[^/.]+$/, "") + '.pdf';
+document.getElementById('download').download = localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf';
+localStorage.clear();
 }
-img.src = imgData;
+img.src = localStorage.img;
 }
 </script>
 </body>
