@@ -2,27 +2,32 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>أدوات PDF دهبي</title>
+<title>3 أدوات PDF دهبي</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <style>
-body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px}
-.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:520px;margin:auto}
-h1{color:#B8860B;text-align:center;margin-bottom:25px}
-.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:#FA}
-.tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px}
-input{width:100%;padding:13px;border:2px solid #C0C0C0;border-radius:12px;margin:12px 0}
-button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:15px;border:none;border-radius:12px;width:100%;font-size:17px;font-weight:bold;cursor:pointer}
-.instruction{background:#FFF8DC;border:2px solid #FFD700;border-radius:12px;padding:15px;margin:20px 0;text-align:center;color:#8B6914;font-weight:bold}
-#loading{display:none;text-align:center;color:#B8860B;font-size:18px;font-weight:bold}
-#result{display:none;text-align:center}
-#download{background:linear-gradient(135deg,#C0C0C0,#A9A9A9);color:#1a1a1a;padding:14px 30px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;margin-top:12px}
+body{background:linear-gradient(135deg,#C0C0C0,#E8E8E8);font-family:tahoma;padding:30px;min-height:100vh}
+.box{background:white;border:3px solid #FFD700;border-radius:25px;padding:35px;max-width:540px;margin:auto;box-shadow:0 15px 50px rgba(0,0,0,0.15)}
+h1{color:#B8860B;text-align:center;margin-bottom:25px;text-shadow:1px 1px 2px rgba(0,0,0,0.1)}
+.tool{border:2px solid #D4AF37;border-radius:18px;padding:22px;margin:18px 0;background:linear-gradient(145deg,#FA,#F0F0F0);transition:0.3s}
+.tool:hover{border-color:#FFD700;box-shadow:0 6px 25px rgba(255,215,0,0.3);transform:translateY(-2px)}
+.tool h3{color:#B8860B;border-bottom:2px solid #FFD700;padding-bottom:8px;margin-bottom:12px}
+input{width:100%;padding:13px;border:2px solid #C0C0C0;border-radius:12px;margin:12px 0;background:#fff}
+input:focus{border-color:#FFD700;outline:none;box-shadow:0 0 10px rgba(255,215,0,0.3)}
+button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:15px;border:none;border-radius:12px;width:100%;font-size:17px;font-weight:bold;cursor:pointer;box-shadow:0 4px 15px rgba(218,165,32,0.4)}
+button:hover{background:linear-gradient(135deg,#FFDF00,#B8860B);transform:scale(1.02)}
+.instruction{background:linear-gradient(135deg,#FFF8DC,#FFEFD5);border:2px solid #FFD700;border-radius:12px;padding:15px;margin:20px 0;text-align:center;color:#8B6914;font-weight:bold}
+#loading{display:none;text-align:center;color:#B8860B;font-size:18px;font-weight:bold;margin-top:15px}
+#result{display:none;text-align:center;margin-top:20px}
+#download{background:linear-gradient(135deg,#C0C0C0,#A9A9A9);color:#1a1a1a;padding:14px 30px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:18px;display:inline-block;margin-top:12px;box-shadow:0 4px 15px rgba(169,169,169,0.4)}
+#download:hover{transform:scale(1.05)}
 .coming{background:#f5f5f5;color:#999;padding:12px;border-radius:8px;text-align:center;border:2px dashed #C0C0C0;font-weight:bold}
+small{color:#666;font-size:12px}
 </style>
 </head>
 <body>
 <div class="box">
-<h1>✨ أدوات PDF احترافية ✨</h1>
+<h1>✨ 3 أدوات PDF احترافية ✨</h1>
 <div class="instruction">⏱️ ادعم الموقع بـ 5 ثواني إعلان قبل كل تحويل</div>
 
 <div class="tool">
@@ -35,23 +40,32 @@ button{background:linear-gradient(135deg,#FFD700,#DAA520);color:#1a1a1a;padding:
 <h3>2. ضغط PDF 🗜️</h3>
 <input type="file" id="compressPdf" accept=".pdf">
 <button onclick="goToAd('compress')">ضغط الآن</button>
+<small>يقلل الحجم 30-50%</small>
 </div>
 
-<div class="tool"><h3>3. PDF → صورة 🖼️</h3><div class="coming">قريباً</div></div>
-<div class="tool"><h3>4. دمج PDF 📎</h3><div class="coming">قريباً</div></div>
+<div class="tool">
+<h3>3. دمج PDF 📎</h3>
+<input type="file" id="mergePdf" accept=".pdf" multiple>
+<button onclick="goToAd('merge')">دمج الآن</button>
+<small>اختار ملفين أو أكتر مع بعض Ctrl</small>
+</div>
+
+<div class="tool"><h3>4. PDF → صورة 🖼️</h3><div class="coming">قريباً - جاري التطوير</div></div>
 
 <div id="loading">⏳ جاري التحويل بعد الإعلان...</div>
-<div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم!</p><a id="download" download="file.pdf">📥 تحميل الملف</a></div>
+<div id="result"><p style="color:#B8860B;font-size:22px;font-weight:bold">✅ تم بنجاح!</p><a id="download" download="file.pdf">📥 تحميل الملف</a></div>
 </div>
 
 <script>
 const LINK = 'https://shrinkme.io/1PxO?r=';
 
 function goToAd(tool) {
+let file, files, reader;
+
 if(tool === 'img') {
-const file = document.getElementById('imgToPdf').files[0];
-if(!file) return alert('اختار صورة');
-const reader = new FileReader();
+file = document.getElementById('imgToPdf').files[0];
+if(!file) return alert('⚠️ اختار صورة الأول');
+reader = new FileReader();
 reader.onload = e => {
 localStorage.tool = 'img';
 localStorage.data = e.target.result;
@@ -60,10 +74,11 @@ location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done')
 }
 reader.readAsDataURL(file);
 }
+
 if(tool === 'compress') {
-const file = document.getElementById('compressPdf').files[0];
-if(!file) return alert('اختار PDF');
-const reader = new FileReader();
+file = document.getElementById('compressPdf').files[0];
+if(!file) return alert('⚠️ اختار PDF الأول');
+reader = new FileReader();
 reader.onload = e => {
 localStorage.tool = 'compress';
 localStorage.data = e.target.result;
@@ -71,6 +86,25 @@ localStorage.name = file.name;
 location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
 }
 reader.readAsArrayBuffer(file);
+}
+
+if(tool === 'merge') {
+files = document.getElementById('mergePdf').files;
+if(files.length < 2) return alert('⚠️ اختار ملفين PDF على الأقل');
+let loaded = 0;
+let pdfsData = [];
+for(let i=0; i<files.length; i++) {
+reader = new FileReader();
+reader.onload = e => {
+pdfsData.push(e.target.result);
+loaded++;
+if(loaded === files.length) {
+localStorage.tool = 'merge';
+localStorage.data = JSON.stringify(pdfsData);
+localStorage.name = 'merged.pdf';
+location.href = LINK + encodeURIComponent(location.href.split('#')[0] + '#done');
+}
+reader.readAsDataURL(files[i]);
 }
 document.getElementById('loading').style.display = 'block';
 }
@@ -81,6 +115,7 @@ const tool = localStorage.tool;
 const { jsPDF } = window.jspdf;
 const { PDFDocument } = PDFLib;
 
+try {
 if(tool === 'img') {
 const img = new Image();
 img.onload = () => {
@@ -88,8 +123,7 @@ const p = new jsPDF();
 const w = p.internal.pageSize.getWidth();
 const h = p.internal.pageSize.getHeight();
 p.addImage(localStorage.data, 'JPEG', 0, 0, w, h);
-const url = p.output('bloburl');
-showResult(url, localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
+showResult(p.output('bloburl'), localStorage.name.replace(/\.[^/.]+$/, "") + '.pdf');
 }
 img.src = localStorage.data;
 }
@@ -99,8 +133,25 @@ const pdfBytes = new Uint8Array(atob(localStorage.data.split(',')[1] || localSto
 const pdfDoc = await PDFDocument.load(pdfBytes);
 const pdfBytesCompressed = await pdfDoc.save({useObjectStreams: false});
 const blob = new Blob([pdfBytesCompressed], {type: 'application/pdf'});
-const url = URL.createObjectURL(blob);
-showResult(url, 'compressed_' + localStorage.name);
+showResult(URL.createObjectURL(blob), 'compressed_' + localStorage.name);
+}
+
+if(tool === 'merge') {
+const pdfsData = JSON.parse(localStorage.data);
+const mergedPdf = await PDFDocument.create();
+for(let data of pdfsData) {
+const pdfBytes = new Uint8Array(atob(data.split(',')[1]).split('').map(c=>c.charCodeAt(0)));
+const pdf = await PDFDocument.load(pdfBytes);
+const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+copiedPages.forEach(page => mergedPdf.addPage(page));
+}
+const pdfBytes = await mergedPdf.save();
+const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+showResult(URL.createObjectURL(blob), localStorage.name);
+}
+} catch(e) {
+alert('حصل خطأ: ' + e.message);
+document.getElementById('loading').style.display = 'none';
 }
 localStorage.clear();
 }
